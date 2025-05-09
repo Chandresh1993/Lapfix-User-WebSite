@@ -15,10 +15,10 @@ const Header = () => {
         <div className="w-28">
           <img className="w-full h-full object-cover" src={logo} alt="logo" />
         </div>
-        <div className="flex flex-row items-center gap-8 text-lg font-bold ">
-          <button className="uppercase">Heading</button>
-          <button className="uppercase">SubHeading</button>
-          <button className="uppercase">Products</button>
+        <div className="flex flex-row items-center gap-8 text-lg font-bold  ">
+          <button className="uppercase hover:underline">Heading</button>
+          <button className="uppercase hover:underline">SubHeading</button>
+          <button className="uppercase hover:underline">Products</button>
         </div>
         <div>
           <button
