@@ -1,63 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-
-const sidebarItems = [
-  {
-    title: "Dashboard",
-    subItems: [
-      {
-        title: "Overview",
-        subItems: ["Today", "This Week"],
-      },
-      {
-        title: "Reports",
-        subItems: ["Monthly", "Annual"],
-      },
-    ],
-  },
-  {
-    title: "Courses",
-    subItems: [
-      {
-        title: "All Courses",
-        subItems: ["Live", "Archived"],
-      },
-      {
-        title: "Add New",
-        subItems: [],
-      },
-    ],
-  },
-];
+import axios from "axios";
+import "./Sidebar.css"; // Import custom CSS
 
 const Sidebar = () => {
   const [openMain, setOpenMain] = useState(null);
-  const [openSub, setOpenSub] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchMainCategories = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/mainCategory`
+        );
+        setCategories(res.data);
+      } catch (err) {
+        console.error("Failed to fetch main categories", err);
+      }
+    };
+
+    fetchMainCategories();
+  }, []);
 
   const toggleMain = (index) => {
     setOpenMain(openMain === index ? null : index);
-    setOpenSub(null);
-  };
-
-  const toggleSub = (index) => {
-    setOpenSub(openSub === index ? null : index);
   };
 
   return (
-    <aside className="w-64 h-screen bg-gradient-to-b from-gray-100 to-blue-600 text-white shadow-lg overflow-y-auto">
-      <div className="p-6 text-2xl font-bold text-blue-800 ">Golf Course</div>
+    <aside className="w-64 h-screen bg-white border border-gray-200 text-white shadow-lg overflow-y-auto">
+      <div className="p-6 text-2xl font-bold text-gray-900 uppercase">
+        Golf Course
+      </div>
 
-      <ul className="p-4 space-y-4">
-        {sidebarItems.map((mainItem, mainIdx) => (
-          <li key={mainIdx}>
+      <ul className="p-4 space-y-3">
+        {categories.map((mainItem, mainIdx) => (
+          <li key={mainItem._id}>
             <button
               onClick={() => toggleMain(mainIdx)}
-              style={{ transitionDuration: "1500ms" }}
-              className="flex items-center justify-between w-full text-left font-semibold text-white hover:bg-blue-700 hover:text-yellow-300 px-3 py-2 rounded transition-colors ease-in-out text-xl"
+              className="flex items-center justify-between w-full text-left font-semibold  px-1 hover:bg-blue-300 transition duration-300 ease-in-out text-gray-900  py-2  text-base uppercase  border-b border-gray-300"
             >
-              {mainItem.title}
+              {mainItem.name}
               <span
-                className={`transform transition-transform duration-300 ${
+                className={`transform transition-transform duration-300 ease-in-out ${
                   openMain === mainIdx ? "rotate-45" : "rotate-0"
                 }`}
               >
@@ -65,43 +49,23 @@ const Sidebar = () => {
               </span>
             </button>
 
-            {openMain === mainIdx && (
-              <ul className="pl-4 mt-2 space-y-2 transition-all duration-300 ease-in-out">
-                {mainItem.subItems.map((subItem, subIdx) => (
-                  <li key={subIdx}>
-                    <button
-                      onClick={() => toggleSub(subIdx)}
-                      style={{ transitionDuration: "1500ms" }}
-                      className="flex items-center justify-between w-full text-left text-sm hover:bg-white font-bold hover:text-blue-800 px-3 py-1 rounded transition-colors ease-in-out"
-                    >
-                      {subItem.title}
-                      {subItem.subItems.length > 0 && (
-                        <span
-                          className={`transform transition-transform duration-300 ${
-                            openSub === subIdx ? "rotate-45" : "rotate-0"
-                          }`}
-                        >
-                          <Plus size={16} />
-                        </span>
-                      )}
-                    </button>
-
-                    {openSub === subIdx && subItem.subItems.length > 0 && (
-                      <ul className="pl-4 mt-1 space-y-1 transition-all duration-300 ease-in-out">
-                        {subItem.subItems.map((subSubItem, subSubIdx) => (
-                          <li
-                            key={subSubIdx}
-                            className="text-xs hover:bg-white hover:text-blue-800 px-3 py-1 rounded font-bold cursor-pointer transition-colors duration-500 ease-in-out"
-                          >
-                            {subSubItem}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div
+              className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
+                openMain === mainIdx ? "max-h-40" : "max-h-0"
+              }`}
+            >
+              {mainItem.subCategories.length > 0 && (
+                <ul className="pl-4 mt-2 space-y-2">
+                  {mainItem.subCategories.map((subItem) => (
+                    <li key={subItem._id}>
+                      <div className="text-sm font-medium text-gray-700 hover:bg-blue-200 transition duration-300 ease-in-out px-3 py-1 cursor-pointer rounded">
+                        {subItem.name}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </li>
         ))}
       </ul>

@@ -11,26 +11,25 @@ const MainLayout = ({ children }) => {
 
   return (
     <div className="workspace flex h-screen overflow-hidden relative">
-      {/* Mobile Sidebar */}
+      {/* Sidebar - Always hidden unless toggled */}
       <div
-        className={`fixed z-40 inset-y-0 left-0 w-64 
-              transition-transform duration-500 ease-in-out 
-              transform md:relative md:translate-x-0 md:transition-none
-              ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`absolute z-40 inset-y-0 left-0 w-64 
+    bg-white transition-transform duration-300 ease-in-out 
+    transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <Sidebar />
       </div>
 
-      {/* Mobile Backdrop (optional) */}
+      {/* Overlay for mobile or any screen */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black bg-opacity-50 md:hidden"
+          className="fixed inset-0 z-30 "
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col ">
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
         <Header toggleSidebar={toggleSidebar} />
         <main className="overflow-y-auto transition-all duration-300 ease-in-out">
           {children}
