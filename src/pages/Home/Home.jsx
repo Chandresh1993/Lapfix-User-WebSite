@@ -1,14 +1,15 @@
 import React from "react";
-import SimpleSliderTest from "./Slider";
 import Product from "./Product";
+import Footer from "./Footer";
 
 const Home = () => {
   return (
     <div>
-      <SimpleSliderTest></SimpleSliderTest>
-
-      <div className="my-10">
+      <div className="">
         <Product></Product>
+      </div>
+      <div>
+        <Footer></Footer>
       </div>
     </div>
   );
