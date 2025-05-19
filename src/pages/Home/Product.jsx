@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import noImage from "../../assets/no_image.png";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useSearchParams } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 const Product = () => {
   const [products, setProducts] = useState([]); // renamed to plural for clarity
@@ -11,6 +12,8 @@ const Product = () => {
   const [limit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [searchParams] = useSearchParams();
+  const [loading, setLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(true);
 
   const subCategoryName = searchParams.get("subCategoryName") || "";
 
@@ -19,15 +22,20 @@ const Product = () => {
   }, [page, limit, subCategoryName]);
 
   const getAllProducts = async (page, limit, subCategoryName) => {
+    setLoading(true);
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/product?page=${page}&limit=${limit}&subCategoryName=${subCategoryName}`
       );
 
       setProducts(res.data.products); // <-- fix here
+
       setTotalPages(res.data.totalPages);
+      setTotalCount(res.data);
     } catch (err) {
       console.error("Failed to fetch products", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,60 +55,82 @@ const Product = () => {
 
   return (
     <div className="p-4">
-      <div className=" text-center font-bold text-3xl  mb-8 text-blue-800 uppercase ">
-        {subCategoryName}
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {products.map((item) => (
-          <div
-            key={item._id}
-            className="border rounded-lg shadow-md bg-white p-6"
-          >
-            {item.price > item.discountPrice && (
-              <div className="bg-red-500 p-1 w-16 rounded flex items-center justify-center mb-1">
-                <p className="text-xs text-white font-medium">
-                  Save{" "}
-                  {Math.round(
-                    ((item.price - item.discountPrice) / item.price) * 100
-                  )}
-                  %
-                </p>
-              </div>
-            )}
-            <img
-              src={item.images[0] || noImage}
-              alt={item.name}
-              className="w-full h-48 object-cover mb-2 rounded"
-            />
-            <h2 className="text-base text-gray-800 font-medium uppercase">
-              {item.name}
-            </h2>
-            <p className="text-sm text-gray-700">{item.description}</p>
-            <div className="text-base font-normal flex flex-row items-center gap-4">
-              <p className="text-red-500 font-bold">
-                ₹{formatCurrency(item.discountPrice)}
-              </p>
-              <p className="line-through font-semibold text-gray-500 text-base">
-                ₹{formatCurrency(item.price)}
-              </p>
-            </div>
-            <p className="text-xs mt-1">
-              <span className="font-medium text-gray-700">In Stock:</span>{" "}
-              <span
-                className={
-                  item.quantity === 0
-                    ? "text-red-500 font-semibold"
-                    : item.quantity < 5
-                    ? "text-yellow-600 font-semibold"
-                    : "text-green-600 font-semibold"
-                }
-              >
-                {item.quantity} pcs
-              </span>
+      {subCategoryName && (
+        <div className=" font-normal text-base  mb-8 text-gray-500 ">
+          Home / <span className="text-gray-800">{subCategoryName}</span>
+        </div>
+      )}
+
+      {!loading &&
+        (totalCount.total > 0 ? (
+          <div className="text-center mb-5">
+            <p className="font-normal text-base mb-8 text-gray-900">
+              {totalCount.total} Products
+            </p>
+          </div>
+        ) : (
+          <div className="text-center mb-5">
+            <p className="font-normal text-base mb-8 text-red-500">
+              No products available.
             </p>
           </div>
         ))}
-      </div>
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {products.map((item) => (
+            <div
+              key={item._id}
+              className="border rounded-lg shadow-md bg-white p-6"
+            >
+              {item.price > item.discountPrice && (
+                <div className="bg-red-500 p-1 w-16 rounded flex items-center justify-center mb-1">
+                  <p className="text-xs text-white font-medium">
+                    Save{" "}
+                    {Math.round(
+                      ((item.price - item.discountPrice) / item.price) * 100
+                    )}
+                    %
+                  </p>
+                </div>
+              )}
+              <img
+                src={item.images[0] || noImage}
+                alt={item.name}
+                className="w-full h-48 object-cover mb-2 rounded"
+              />
+              <h2 className="text-base text-gray-800 font-medium uppercase">
+                {item.name}
+              </h2>
+              <p className="text-sm text-gray-700">{item.description}</p>
+              <div className="text-base font-normal flex flex-row items-center gap-4">
+                <p className="text-red-500 font-bold">
+                  ₹{formatCurrency(item.discountPrice)}
+                </p>
+                <p className="line-through font-semibold text-gray-500 text-base">
+                  ₹{formatCurrency(item.price)}
+                </p>
+              </div>
+              <p className="text-xs mt-1">
+                <span className="font-medium text-gray-700">In Stock:</span>{" "}
+                <span
+                  className={
+                    item.quantity === 0
+                      ? "text-red-500 font-semibold"
+                      : item.quantity < 5
+                      ? "text-yellow-600 font-semibold"
+                      : "text-green-600 font-semibold"
+                  }
+                >
+                  {item.quantity} pcs
+                </span>
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Pagination Controls */}
       {/* Pagination Controls with Arrow Buttons */}

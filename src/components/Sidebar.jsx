@@ -42,19 +42,21 @@ const Sidebar = () => {
       <ul className="p-4 space-y-3">
         {categories.map((mainItem, mainIdx) => (
           <li key={mainItem._id}>
-            <button
-              onClick={() => toggleMain(mainIdx)}
-              className="flex items-center justify-between w-full text-left font-semibold  px-1 hover:bg-blue-300 transition duration-300 ease-in-out text-gray-900  py-2  text-base uppercase  border-b border-gray-300"
-            >
-              {mainItem.name}
-              <span
-                className={`transform transition-transform duration-300 ease-in-out ${
-                  openMain === mainIdx ? "rotate-45" : "rotate-0"
-                }`}
+            <div className="border-b border-gray-300">
+              <button
+                onClick={() => toggleMain(mainIdx)}
+                className="flex items-center justify-between w-full text-left font-semibold  px-1 hover:bg-blue-300 transition duration-300 ease-in-out text-gray-900  py-2  text-base uppercase   rounded"
               >
-                <Plus size={18} />
-              </span>
-            </button>
+                {mainItem.name}
+                <span
+                  className={`transform transition-transform duration-300 ease-in-out ${
+                    openMain === mainIdx ? "rotate-45" : "rotate-0"
+                  }`}
+                >
+                  <Plus size={18} />
+                </span>
+              </button>
+            </div>
 
             <div
               className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
