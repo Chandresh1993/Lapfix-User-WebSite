@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import axios from "axios";
 import "./Sidebar.css"; // Import custom CSS
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [openMain, setOpenMain] = useState(null);
   const [categories, setCategories] = useState([]);
+
+  const navigation = useNavigate();
 
   useEffect(() => {
     const fetchMainCategories = async () => {
@@ -24,6 +27,10 @@ const Sidebar = () => {
 
   const toggleMain = (index) => {
     setOpenMain(openMain === index ? null : index);
+  };
+
+  const handlesubHeading = (name) => {
+    navigation(`?subCategoryName=${name}`);
   };
 
   return (
@@ -58,7 +65,10 @@ const Sidebar = () => {
                 <ul className="pl-4 mt-2 space-y-2">
                   {mainItem.subCategories.map((subItem) => (
                     <li key={subItem._id}>
-                      <div className="text-sm font-medium text-gray-700 hover:bg-blue-200 transition duration-300 ease-in-out px-3 py-1 cursor-pointer rounded">
+                      <div
+                        onClick={() => handlesubHeading(subItem.name)}
+                        className="text-sm font-medium text-gray-700 hover:bg-blue-200 transition duration-300 ease-in-out px-3 py-1 cursor-pointer rounded"
+                      >
                         {subItem.name}
                       </div>
                     </li>

@@ -1,14 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/footer-logo.png";
 import { Menu } from "lucide-react";
 
 const Header = ({ toggleSidebar }) => {
+  const navition = useNavigate();
+
+  const HandleClick = () => {
+    navition("/");
+  };
+
   return (
     <header className="bg-blue-800 text-white p-4 relative">
       <div className="flex items-center justify-center relative">
         {/* Logo centered */}
-        <div className="w-36 mx-auto">
+        <button onClick={() => HandleClick()} className="w-36 mx-auto">
           <img className="w-full h-full object-contain" src={logo} alt="logo" />
-        </div>
+        </button>
 
         {/* Menu icon fixed to the right */}
         <button

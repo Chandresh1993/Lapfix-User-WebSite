@@ -14,16 +14,16 @@ const MainLayout = ({ children }) => {
       {/* Sidebar - Always hidden unless toggled */}
       <div
         className={`absolute z-40 inset-y-0 left-0 w-64 
-    bg-white transition-transform duration-300 ease-in-out 
-    transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+        bg-white transition-transform duration-300 ease-in-out 
+        transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <Sidebar />
       </div>
 
-      {/* Overlay for mobile or any screen */}
+      {/* Overlay with semi-transparent background */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 z-30 "
+          className="fixed inset-0 z-30 bg-black bg-opacity-50"
           onClick={() => setSidebarOpen(false)}
         />
       )}
