@@ -124,7 +124,7 @@ const Product = () => {
                 )}
                 <img
                   src={item.images[0] || noImage}
-                  alt={item.name}
+                  alt=""
                   className="w-full h-48 object-cover mb-2 rounded"
                 />
                 <h2 className="text-base text-gray-800 font-medium uppercase">

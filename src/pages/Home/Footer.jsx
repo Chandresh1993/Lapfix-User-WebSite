@@ -1,8 +1,8 @@
 import React from "react";
 import logo from "../../assets/footer-logo.png";
-import location from "../../assets/location-icon.svg";
-import phone from "../../assets/phone-icon.svg";
-import Email from "../../assets/Email-icon 2.svg";
+import { ReactComponent as Locattion } from "../../assets/location-icon.svg";
+import { ReactComponent as PhoneIcon } from "../../assets/phone-icon.svg";
+import { ReactComponent as Email } from "../../assets/Email-icon 2.svg";
 import faceBook from "../../assets/facebook-icon.svg";
 import youTube from "../../assets/youtube-icon.svg";
 import intagram from "../../assets/black-instagram-icon.svg";
@@ -24,7 +24,7 @@ const Footer = () => {
                 />
               </div>
               <div className="mt-7">
-                <p className="text-base break-words font-normal text-gray-700">
+                <p className="text-base break-words font-normal text-gray-500">
                   United Web Enhancers Private Limited(UWEPL) the parent of
                   parkGenie Pvt Ltd has been involved in developing parking
                   parking management and related software since 2007, UWEPL has
@@ -36,12 +36,12 @@ const Footer = () => {
 
             {/* Contact Info */}
             <div>
-              <p className="text-3xl font-semibold text-gray-700">Contact us</p>
+              <p className="text-3xl font-semibold text-gray-500">Contact us</p>
               <div className="mt-5">
-                <p className="text-lg font-semibold text-gray-700">
+                <p className="text-lg font-semibold text-gray-500">
                   ParkGenie Private Limited
                 </p>
-                <p className="text-base font-light text-gray-700">
+                <p className="text-base font-light text-gray-500">
                   A venture of United Web Enhancers Pvt. Ltd.
                 </p>
               </div>
@@ -50,11 +50,7 @@ const Footer = () => {
                 {/* Address */}
                 <div className="flex flex-row gap-3">
                   <div className="w-7">
-                    <img
-                      src={location}
-                      alt="Location"
-                      className="w-full h-full object-contain"
-                    />
+                    <Locattion className="w-full h-full fill-gray-500 object-contain" />
                   </div>
                   <div>
                     <a
@@ -62,7 +58,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <p className="text-base font-normal text-gray-700 break-words">
+                      <p className="text-base font-normal text-gray-500 break-words">
                         209, Welldone Tech Park, Sohna Road, Sector 48,
                         Gurugram, Haryana - 122018
                       </p>
@@ -73,15 +69,11 @@ const Footer = () => {
                 {/* Email */}
                 <div className="flex flex-row items-center gap-3">
                   <div className="w-6">
-                    <img
-                      src={Email}
-                      alt="Email"
-                      className="w-full h-full object-contain"
-                    />
+                    <Email className="w-full h-full object-contain fill-gray-500" />
                   </div>
                   <div>
                     <a href="mailto:Info@uweens.com">
-                      <p className="text-base font-normal text-gray-700 break-words">
+                      <p className="text-base font-normal text-gray-500 break-words">
                         Info@uweens.com
                       </p>
                     </a>
@@ -91,15 +83,11 @@ const Footer = () => {
                 {/* Phone */}
                 <div className="flex flex-row items-center gap-3">
                   <div className="w-7">
-                    <img
-                      src={phone}
-                      alt="Phone"
-                      className="w-full h-full object-contain"
-                    />
+                    <PhoneIcon className="w-6 h-6 fill-gray-500 object-contain" />
                   </div>
                   <div>
                     <a href="tel:+91-124-4227149">
-                      <p className="text-base font-normal text-gray-700 break-words">
+                      <p className="text-base font-normal text-gray-500 break-words">
                         +91-124-4227149
                       </p>
                     </a>
@@ -110,7 +98,7 @@ const Footer = () => {
               {/* Social Media */}
               <div className="mt-5">
                 <div className="flex flex-row items-center gap-3">
-                  <p className="text-base font-normal text-gray-700">
+                  <p className="text-base font-normal text-gray-500">
                     Follow us
                   </p>
                   <a
@@ -160,8 +148,8 @@ const Footer = () => {
       {/* Second Footer Section */}
       <div className="">
         {/* Copyright */}
-        <div className="border-t-2 border-gray-700 w-full flex items-center justify-center p-5">
-          <p className="text-base font-normal text-700">
+        <div className="border-t-2 border-gray-300 w-full flex items-center justify-center p-5">
+          <p className="text-base font-normal text-gray-600">
             Copyright &copy; 2007-2025 All Rights Reserved
           </p>
         </div>
