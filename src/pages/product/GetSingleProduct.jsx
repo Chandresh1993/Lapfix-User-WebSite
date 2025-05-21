@@ -97,7 +97,7 @@ const GetSingleProduct = () => {
               <p className="line-through text-base text-gray-500">
                 ₹{formatCurrency(product.price)}
               </p>
-              <div className="bg-red-500 p-1 w-16 rounded flex items-center justify-center mb-1">
+              <div className="bg-red-500 p-1 w-20 rounded flex items-center justify-center mb-1">
                 <p className="text-xs text-white font-medium">
                   Save{" "}
                   {Math.round(
@@ -175,15 +175,15 @@ const GetSingleProduct = () => {
               </p>
             </div>
 
-            <div>
-              <h3 className="font-semibold text-lg mb-1 text-gray-800">
+            <div className="mt-1">
+              <h3 className="font-semibold text-lg  text-gray-800">
                 Description
               </h3>
               <p className="text-gray-600">{product.description}</p>
             </div>
 
-            <div>
-              <h3 className="font-semibold text-lg mb-1 text-gray-800">
+            <div className="mt-1">
+              <h3 className="font-semibold text-lg  text-gray-800">
                 How to Install & Tips
               </h3>
               <p className="text-gray-600">{product.howToInstallAndTips}</p>

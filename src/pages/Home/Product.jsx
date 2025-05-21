@@ -121,7 +121,7 @@ const Product = () => {
                 onClick={() => getIdProduct(item._id)}
               >
                 {item.price > item.discountPrice && (
-                  <div className="bg-red-500 p-1 w-16 rounded flex items-center justify-center mb-1">
+                  <div className="bg-red-500 p-1 w-20 rounded flex items-center justify-center mb-1">
                     <p className="text-xs text-white font-medium">
                       Save{" "}
                       {Math.round(
