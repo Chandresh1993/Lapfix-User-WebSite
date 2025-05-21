@@ -11,7 +11,8 @@ const Footer = () => {
   return (
     <div>
       {/* First Section */}
-      <div className="">
+
+      <div className=" bg-gray-100 ">
         <div className=" p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-20 py-5 md:px-28 ">
             {/* Logo and Description */}
@@ -146,7 +147,7 @@ const Footer = () => {
       </div>
 
       {/* Second Footer Section */}
-      <div className="">
+      <div className=" bg-gray-100">
         {/* Copyright */}
         <div className="border-t-2 border-gray-300 w-full flex items-center justify-center p-5">
           <p className="text-base font-normal text-gray-600">

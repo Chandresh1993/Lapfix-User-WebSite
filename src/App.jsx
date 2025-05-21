@@ -6,6 +6,7 @@ import MainLayout from "./layouts/MainLayout";
 import Loader from "./components/Loader";
 
 const Home = lazy(() => import("./pages/Home/Home"));
+const SingleProduct = lazy(() => import("./pages/product/GetSingleProduct"));
 
 function App() {
   return (
@@ -17,6 +18,14 @@ function App() {
             element={
               <MainLayout>
                 <Home />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/product"
+            element={
+              <MainLayout>
+                <SingleProduct />
               </MainLayout>
             }
           />

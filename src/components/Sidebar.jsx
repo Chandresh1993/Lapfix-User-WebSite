@@ -34,7 +34,7 @@ const Sidebar = ({ onClose }) => {
   };
 
   return (
-    <aside className="w-64 h-screen bg-white border border-gray-200 text-white shadow-lg overflow-y-auto relative">
+    <aside className="w-64 h-screen bg-white border border-gray-200 text-white shadow-lg overflow-y-auto relative  ">
       <button onClick={onClose} className="absolute top-3 right-3 text-black">
         <X size={18} />
       </button>

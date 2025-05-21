@@ -3,20 +3,22 @@ import React, { useEffect, useState } from "react";
 
 import noImage from "../../assets/no_image.png";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import MainIamge from "../../assets/facility-banners.png";
 
 const Product = () => {
   const [products, setProducts] = useState([]); // renamed to plural for clarity
   const [page, setPage] = useState(1);
-  const [limit] = useState(5);
+  const [limit] = useState(30);
   const [totalPages, setTotalPages] = useState(1);
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(true);
 
   const subCategoryName = searchParams.get("subCategoryName") || "";
+
+  const navigation = useNavigate();
 
   useEffect(() => {
     getAllProducts(page, limit, subCategoryName);
@@ -52,6 +54,12 @@ const Product = () => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
     }
+  };
+
+  const getIdProduct = (id) => {
+    navigation("/product", {
+      state: { id: id },
+    });
   };
 
   return (
@@ -105,11 +113,12 @@ const Product = () => {
         {loading ? (
           <Loader />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
             {products.map((item) => (
               <div
                 key={item._id}
-                className="border rounded-lg shadow-md bg-white p-6"
+                className="border rounded-lg shadow-md bg-white p-6 cursor-pointer"
+                onClick={() => getIdProduct(item._id)}
               >
                 {item.price > item.discountPrice && (
                   <div className="bg-red-500 p-1 w-16 rounded flex items-center justify-center mb-1">

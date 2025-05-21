@@ -5,7 +5,7 @@ import Footer from "./Footer";
 const Home = () => {
   return (
     <div>
-      <div className="">
+      <div className=" bg-gray-100">
         <Product></Product>
       </div>
       <div>
