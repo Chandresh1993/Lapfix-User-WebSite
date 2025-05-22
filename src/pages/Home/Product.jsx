@@ -82,6 +82,7 @@ const Product = () => {
   const handleCategoryClick = (id) => {
     setSelectedCategoryId(id);
     setPage(1); // reset to page 1 on category change
+    navigation("/");
   };
 
   const getIdProduct = (id) => {
