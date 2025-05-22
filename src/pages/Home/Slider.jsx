@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import img1 from "../../assets/contact-banner.png";
 import img2 from "../../assets/events-banner.png";
 import img3 from "../../assets/facility-banners.png";
@@ -10,60 +10,58 @@ const images = [
   { src: img3, alt: "Gaekwad Baroda Golf Club" },
 ];
 
-const transitionDuration = 600; // milliseconds
+const transitionDuration = 500;
 
 const SimpleSliderTest = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [fadeIn, setFadeIn] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const timeoutRef = useRef(null);
+  const intervalRef = useRef(null);
 
-  // Clear timeout on unmount or when changing slide
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
 
-  // Automatic slide every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fadeToNextSlide();
+  const startAutoSlide = () => {
+    intervalRef.current = setInterval(() => {
+      if (!isTransitioning) {
+        fadeToNextSlide();
+      }
     }, 5000);
+  };
 
-    return () => clearInterval(interval);
-  }, [currentIndex]);
+  useEffect(() => {
+    startAutoSlide();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [currentIndex, isTransitioning]);
 
   const fadeToNextSlide = () => {
-    setFadeIn(false); // start fade out
+    setIsTransitioning(true);
     timeoutRef.current = setTimeout(() => {
       setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-      setFadeIn(true); // fade in new image
+      setIsTransitioning(false);
     }, transitionDuration);
   };
 
   const fadeToPrevSlide = () => {
-    setFadeIn(false);
+    setIsTransitioning(true);
     timeoutRef.current = setTimeout(() => {
       setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-      setFadeIn(true);
+      setIsTransitioning(false);
     }, transitionDuration);
   };
 
-  const buttonStyle = {
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    color: "white",
-    fontSize: 24,
-    width: 40,
-    height: 40,
-    cursor: "pointer",
-    userSelect: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+  const handleSliderHover = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
 
-    zIndex: 10,
+  const handleSliderLeave = () => {
+    startAutoSlide();
   };
 
   return (
@@ -71,50 +69,92 @@ const SimpleSliderTest = () => {
       style={{
         position: "relative",
         width: "100%",
-        height: 500,
+        height: "500px",
         overflow: "hidden",
-        boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)",
       }}
+      onMouseEnter={handleSliderHover}
+      onMouseLeave={handleSliderLeave}
     >
-      <img
-        key={currentIndex} // force React to re-render image element on index change
-        src={images[currentIndex].src}
-        alt={images[currentIndex].alt}
-        loading="lazy"
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          opacity: fadeIn ? 1 : 0,
-          transition: `opacity ${transitionDuration}ms ease-in-out`,
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      />
+      {images.map((image, index) => (
+        <img
+          key={index}
+          src={image.src}
+          alt={image.alt}
+          loading="lazy"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            opacity: currentIndex === index ? 1 : 0,
+            transition: `opacity ${transitionDuration}ms ease-in-out`,
+            willChange: "opacity",
+          }}
+        />
+      ))}
 
-      {/* Prev Button */}
+      {/* Left Button */}
       <button
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           if (timeoutRef.current) clearTimeout(timeoutRef.current);
           fadeToPrevSlide();
         }}
-        style={{ ...buttonStyle, left: 10 }}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "20px",
+          transform: "translateY(-50%)",
+
+          border: "none",
+          borderRadius: "50%",
+          padding: "8px",
+          cursor: "pointer",
+          zIndex: 10,
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.transform = "translateY(-50%) scale(1.1)")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.transform = "translateY(-50%)")
+        }
         aria-label="Previous Slide"
       >
-        ◀
+        <ChevronLeft size={32} color="#FFFFFF" />
       </button>
 
-      {/* Next Button */}
+      {/* Right Button */}
       <button
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           if (timeoutRef.current) clearTimeout(timeoutRef.current);
           fadeToNextSlide();
         }}
-        style={{ ...buttonStyle, right: 10 }}
+        style={{
+          position: "absolute",
+          top: "50%",
+          right: "20px",
+          transform: "translateY(-50%)",
+
+          border: "none",
+          borderRadius: "50%",
+          padding: "8px",
+          cursor: "pointer",
+          zIndex: 10,
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.transform = "translateY(-50%) scale(1.1)")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.transform = "translateY(-50%)")
+        }
         aria-label="Next Slide"
       >
-        ▶
+        <ChevronRight size={32} color="#FFFFFF" />
       </button>
     </div>
   );

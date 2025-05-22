@@ -12,7 +12,7 @@ const Footer = () => {
     <div>
       {/* First Section */}
 
-      <div className=" bg-gray-100 ">
+      <div className=" bg-white border-t ">
         <div className=" p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-20 py-5 md:px-28 ">
             {/* Logo and Description */}

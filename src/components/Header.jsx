@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/footer-logo.png";
 import { Menu } from "lucide-react";
 import { ReactComponent as Search } from "../assets/search-icon.svg";
-import { SlidersHorizontal, ArrowDownUp } from "lucide-react";
 
 const Header = ({ toggleSidebar, toggleSearchBar }) => {
   const navigate = useNavigate();
@@ -13,6 +12,11 @@ const Header = ({ toggleSidebar, toggleSearchBar }) => {
 
   return (
     <div>
+      {/* <div className="bg-yellow-300 text-black text-center py-2 font-semibold animate-blink">
+        🚧 Our website is under development. For any product inquiries, please
+        contact: 📞 8527527749
+      </div> */}
+
       <header className="bg-blue-800 text-white p-4 relative">
         {/* Search Icon Button */}
         <div className="absolute left-6 top-1/2 transform -translate-y-1/2 z-10 h-10">
@@ -43,17 +47,6 @@ const Header = ({ toggleSidebar, toggleSearchBar }) => {
           </button>
         </div>
       </header>
-
-      <div className="grid grid-cols-2 items-center">
-        <div className="border border-gray-300 p-4 flex items-center justify-center gap-2">
-          <SlidersHorizontal className="w-5 h-5" />
-          <button>Filters</button>
-        </div>
-        <div className="border border-gray-300 p-4 flex items-center justify-center gap-2">
-          <ArrowDownUp className="w-5 h-5" />
-          <button>Sort By</button>
-        </div>
-      </div>
     </div>
   );
 };
