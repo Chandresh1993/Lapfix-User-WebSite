@@ -42,7 +42,7 @@ const Product = () => {
   const getAllProducts = async (
     page,
     limit,
-    categoryId = "",
+    mainCategoryId = "",
     subCategoryName = ""
   ) => {
     setLoading(true);
@@ -51,7 +51,7 @@ const Product = () => {
         params: {
           page,
           limit,
-          categoryId: categoryId || undefined,
+          mainCategoryId: mainCategoryId || undefined,
           subCategoryName: subCategoryName || undefined,
         },
       });
