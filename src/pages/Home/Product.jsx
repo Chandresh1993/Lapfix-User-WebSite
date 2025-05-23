@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import noImage from "../../assets/no_image.png";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 
 const Product = () => {
@@ -14,19 +14,72 @@ const Product = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [pageGroup, setPageGroup] = useState(0); // start from 0 (first 6 pages group)
+  const pagesPerGroup = 6;
 
   const [searchParams] = useSearchParams();
   const subCategoryName = searchParams.get("subCategoryName") || "";
 
   const navigation = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (subCategoryName) {
+      setSelectedCategoryId("");
+    }
+  }, [subCategoryName]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if (location.state?.fromHeader) {
+          await getAllProductsByHeader(page, limit);
+          window.history.replaceState({}, document.title); // clear state after fetch
+        } else if (selectedCategoryId) {
+          await getAllProductsByCategory(page, limit, selectedCategoryId);
+        } else {
+          alert("3");
+          await getAllProducts(page, limit, subCategoryName);
+        }
+      } catch (err) {
+        console.error("Error fetching products", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [
+    page,
+    limit,
+    selectedCategoryId,
+    subCategoryName,
+    location.state?.fromHeader,
+  ]);
+
+  const getAllProductsByHeader = async (page, limit) => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/product`, {
+        params: {
+          page,
+          limit,
+        },
+      });
+      setProducts(res.data.products);
+      setTotalPages(res.data.totalPages);
+      setTotalCount(res.data.total || 0);
+    } catch (err) {
+      console.error("Failed to fetch products", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     getCategory();
   }, []);
-
-  useEffect(() => {
-    getAllProducts(page, limit, selectedCategoryId, subCategoryName);
-  }, [page, limit, selectedCategoryId, subCategoryName]);
 
   const getCategory = async () => {
     try {
@@ -39,12 +92,28 @@ const Product = () => {
     }
   };
 
-  const getAllProducts = async (
-    page,
-    limit,
-    mainCategoryId = "",
-    subCategoryName = ""
-  ) => {
+  const getAllProducts = async (page, limit, subCategoryName) => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/product`, {
+        params: {
+          page,
+          limit,
+
+          subCategoryName: subCategoryName || undefined,
+        },
+      });
+      setProducts(res.data.products);
+      setTotalPages(res.data.totalPages);
+      setTotalCount(res.data.total || 0);
+    } catch (err) {
+      console.error("Failed to fetch products", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getAllProductsByCategory = async (page, limit, mainCategoryId = "") => {
     setLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/product`, {
@@ -52,9 +121,9 @@ const Product = () => {
           page,
           limit,
           mainCategoryId: mainCategoryId || undefined,
-          subCategoryName: subCategoryName || undefined,
         },
       });
+
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
       setTotalCount(res.data.total || 0);
@@ -74,14 +143,36 @@ const Product = () => {
   };
 
   const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setPage(newPage);
+    if (newPage < 1 || newPage > totalPages) return;
+
+    setPage(newPage);
+
+    // Calculate which group this newPage belongs to
+    const newGroup = Math.floor((newPage - 1) / pagesPerGroup);
+    setPageGroup(newGroup);
+  };
+
+  const handleNextGroup = () => {
+    if ((pageGroup + 1) * pagesPerGroup < totalPages) {
+      setPageGroup(pageGroup + 1);
+      setPage(pageGroup * pagesPerGroup + pagesPerGroup + 1);
     }
   };
 
+  const handlePrevGroup = () => {
+    if (pageGroup > 0) {
+      setPageGroup(pageGroup - 1);
+      setPage((pageGroup - 1) * pagesPerGroup + 1);
+    }
+  };
+
+  const startPage = pageGroup * pagesPerGroup + 1;
+  const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+
   const handleCategoryClick = (id) => {
     setSelectedCategoryId(id);
-    setPage(1); // reset to page 1 on category change
+    setPage(1); // reset to page 1 on category change // reset to first page
+    setPageGroup(0); // reset to first page group
     navigation("/");
   };
 
@@ -116,7 +207,7 @@ const Product = () => {
             <button
               key={category._id}
               onClick={() => handleCategoryClick(category._id)}
-              className={`px-5 py-2.5   text-sm md:text-base uppercase ${
+              className={` px-2 md:px-5 py-2.5  hover:text-blue-700  text-sm md:text-base uppercase ${
                 selectedCategoryId === category._id
                   ? " text-blue-700 font-bold "
                   : "text-gray-700 font-medium "
@@ -164,6 +255,7 @@ const Product = () => {
                 <img
                   src={item.images?.[0] || noImage}
                   alt=""
+                  loading="lazy"
                   className="w-full h-48 object-cover mb-2 rounded"
                 />
                 <h2 className="text-base text-gray-800 font-medium uppercase break-words line-clamp-1">
@@ -201,26 +293,45 @@ const Product = () => {
 
         {/* Pagination */}
         <div className="flex justify-center mt-8 space-x-2">
+          {/* Prev Group */}
           <button
-            onClick={() => handlePageChange(page - 1)}
-            disabled={page === 1}
-            className={` ${
-              page === 1 ? "cursor-not-allowed opacity-50" : "hover:bg-gray-200"
+            onClick={handlePrevGroup}
+            disabled={pageGroup === 0}
+            className={`px-2 ${
+              pageGroup === 0
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-gray-200"
+            }`}
+          ></button>
+
+          {/* Prev Page */}
+          {/* Prev Group */}
+          <button
+            onClick={handlePrevGroup}
+            disabled={pageGroup === 0}
+            className={`px-2 ${
+              pageGroup === 0
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-gray-200"
             }`}
           >
-            <FiChevronLeft size={24} />
+            <FiChevronLeft size={20} />
           </button>
 
-          {[...Array(totalPages)].map((_, idx) => {
-            const pageNumber = idx + 1;
+          {/* Page Numbers */}
+          {(endPage - startPage + 1 > 0
+            ? [...Array(endPage - startPage + 1)]
+            : []
+          ).map((_, idx) => {
+            const pageNumber = startPage + idx;
             return (
               <button
                 key={pageNumber}
                 onClick={() => handlePageChange(pageNumber)}
-                className={`w-10 h-10 flex items-center justify-center rounded-full ${
+                className={`w-10 h-10 flex items-center justify-center rounded-full  ${
                   pageNumber === page
-                    ? "bg-blue-800 text-white"
-                    : "hover:bg-blue-300"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 {pageNumber}
@@ -228,16 +339,31 @@ const Product = () => {
             );
           })}
 
+          {/* Next Page */}
+          {/* Next Group */}
           <button
-            onClick={() => handlePageChange(page + 1)}
-            disabled={page === totalPages}
-            className={` ${
-              page === totalPages
+            onClick={handleNextGroup}
+            disabled={(pageGroup + 1) * pagesPerGroup >= totalPages}
+            className={`px-2 ${
+              (pageGroup + 1) * pagesPerGroup >= totalPages
                 ? "cursor-not-allowed opacity-50"
                 : "hover:bg-gray-200"
             }`}
           >
-            <FiChevronRight size={24} />
+            <FiChevronRight size={20} />
+          </button>
+
+          {/* Next Group */}
+          <button
+            onClick={handleNextGroup}
+            disabled={(pageGroup + 1) * pagesPerGroup >= totalPages}
+            className={`px-2 ${
+              (pageGroup + 1) * pagesPerGroup >= totalPages
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-gray-200"
+            }`}
+          >
+            <span className="text-sm font-medium text-gray-700">Next</span>
           </button>
         </div>
       </div>

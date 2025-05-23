@@ -49,9 +49,9 @@ const Footer = () => {
 
               <div className="mt-3 flex flex-col gap-2">
                 {/* Address */}
-                <div className="flex flex-row gap-3">
-                  <div className="w-7">
-                    <Locattion className="w-full h-full fill-gray-500 object-contain" />
+                <div className="flex flex-row gap-3 ">
+                  <div className="w-7 ">
+                    <Locattion className="w-7 h-full fill-gray-500 object-contain" />
                   </div>
                   <div>
                     <a

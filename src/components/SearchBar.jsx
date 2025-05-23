@@ -27,9 +27,9 @@ const SearchBar = ({ onClose }) => {
       const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/product`, {
         params: { search: searchText },
       });
+
       setSuggestions(res.data.products || []);
     } catch (error) {
-      console.error("Error fetching suggestions:", error);
       setSuggestions([]);
     } finally {
       setLoading(false);
@@ -127,12 +127,6 @@ const SearchBar = ({ onClose }) => {
             No products found.
           </p>
         )
-      )}
-
-      {query.length > 0 && suggestions.length === 0 && (
-        <p className="mt-4 text-center text-gray-500 text-sm">
-          No products found.
-        </p>
       )}
     </div>
   );

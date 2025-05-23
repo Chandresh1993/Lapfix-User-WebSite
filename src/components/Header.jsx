@@ -7,7 +7,7 @@ const Header = ({ toggleSidebar, toggleSearchBar }) => {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    navigate("/");
+    navigate("/", { state: { fromHeader: true } });
   };
 
   return (
