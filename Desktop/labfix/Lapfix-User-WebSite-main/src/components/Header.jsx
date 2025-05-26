@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/footer-logo.png";
 import { Menu } from "lucide-react";
 import { ReactComponent as Search } from "../assets/search-icon.svg";
 import LapFix from "../assets/WhatsApp Image 2025-05-25 at 1.49.38 PM.jpeg";
@@ -15,7 +14,7 @@ const Header = ({ toggleSidebar, toggleSearchBar }) => {
     <div>
       <div className="bg-yellow-300 text-black text-center py-2 font-semibold animate-blink">
         🚧 Our website is under development. For any product inquiries, please
-        contact: 📞 9999229332 / 9999449337
+        contact: 📞 9999229332 / 9999449337 / 9999009336 / 9999700766
       </div>
 
       <header className="bg-black text-white p-4 relative">

@@ -1,10 +1,9 @@
 import React from "react";
-import logo from "../../assets/footer-logo.png";
 import { ReactComponent as Locattion } from "../../assets/location-icon.svg";
 import { ReactComponent as PhoneIcon } from "../../assets/phone-icon.svg";
 import { ReactComponent as Email } from "../../assets/Email-icon 2.svg";
-import faceBook from "../../assets/facebook-icon.svg";
-import youTube from "../../assets/youtube-icon.svg";
+// import faceBook from "../../assets/facebook-icon.svg";
+// import youTube from "../../assets/youtube-icon.svg";
 import intagram from "../../assets/black-instagram-icon.svg";
 
 const Footer = () => {
@@ -99,9 +98,9 @@ const Footer = () => {
               <div className="mt-5">
                 <div className="flex flex-row items-center gap-3">
                   <p className="text-base font-normal text-gray-500">
-                    Follow us
+                    Follow us :
                   </p>
-                  <a
+                  {/* <a
                     href="https://www.facebook.com/parkgenieapp/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -112,10 +111,10 @@ const Footer = () => {
                       alt="Facebook"
                       className="w-full h-full object-contain"
                     />
-                  </a>
+                  </a> */}
 
                   <a
-                    href="https://www.linkedin.com/company/parkgenie-pvt-limited/"
+                    href="https://www.instagram.com/lapfixindia/?igsh=cW1kd2dpczhkYnJp&utm_source=qr#"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-5"
@@ -126,7 +125,7 @@ const Footer = () => {
                       className="w-full h-full object-contain"
                     />
                   </a>
-                  <a
+                  {/* <a
                     href="https://www.youtube.com/channel/UC9vS3kqoWoVqMMSvgwxztCA"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -137,7 +136,7 @@ const Footer = () => {
                       alt="YouTube"
                       className="w-full h-full object-contain"
                     />
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>

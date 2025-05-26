@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import img1 from "../../assets/contact-banner.png";
-import img2 from "../../assets/events-banner.png";
-import img3 from "../../assets/facility-banners.png";
+import img1 from "../../assets/pexels-veeterzy-303383.jpg";
+import img2 from "../../assets/michail-sapiton-alCEnNmzhPE-unsplash.jpg";
+import img3 from "../../assets/sven-brandsma-nNeEXQlBqaY-unsplash.jpg";
 
 const images = [
   { src: img1, alt: "DLF Golf Country Club" },
@@ -84,7 +84,7 @@ const SimpleSliderTest = () => {
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "cover",
+            objectFit: "fill",
             position: "absolute",
             top: 0,
             left: 0,
