@@ -4,6 +4,7 @@ import noImage from "../../assets/no_image.png";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
+import Slider from "./Slider";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -39,7 +40,6 @@ const Product = () => {
         } else if (selectedCategoryId) {
           await getAllProductsByCategory(page, limit, selectedCategoryId);
         } else {
-          alert("3");
           await getAllProducts(page, limit, subCategoryName);
         }
       } catch (err) {
@@ -185,6 +185,30 @@ const Product = () => {
   return (
     <div>
       {/* Header */}
+
+      {/* Category Buttons */}
+      <div className="flex justify-center bg-white  ">
+        <div className=" border-b border-t border-gray-200 w-full flex justify-center">
+          <div className="flex justify-center items-center ">
+            {categories.slice(0, 5).map((category) => (
+              <button
+                key={category._id}
+                onClick={() => handleCategoryClick(category._id)}
+                className={` px-2 md:px-5 py-4  hover:bg-gray-500 hover:text-white border border-r border-gray-200  text-sm md:text-base uppercase ${
+                  selectedCategoryId === category._id
+                    ? " text-black font-bold "
+                    : "text-gray-700 font-normal"
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="">
+        <Slider></Slider>
+      </div>
       <div className="pt-10 pb-4  p-4">
         {subCategoryName ? (
           <p className="text-3xl text-center font-extrabold text-black uppercase">
@@ -198,25 +222,6 @@ const Product = () => {
         <p className="text-center text-gray-700 font-medium text-base mt-3">
           Store. The best way to buy the products you love
         </p>
-      </div>
-
-      {/* Category Buttons */}
-      <div className="flex justify-center py-2 ">
-        <div className="inline-flex flex-wrap justify-center items-center gap-4 border-b border-gray-300 pb-4">
-          {categories.slice(0, 5).map((category) => (
-            <button
-              key={category._id}
-              onClick={() => handleCategoryClick(category._id)}
-              className={` px-2 md:px-5 py-2.5  hover:text-blue-700  text-sm md:text-base uppercase ${
-                selectedCategoryId === category._id
-                  ? " text-blue-700 font-bold "
-                  : "text-gray-700 font-medium "
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* Banner Image */}
@@ -234,12 +239,12 @@ const Product = () => {
         {loading ? (
           <Loader />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 p-4">
             {products.map((item) => (
               <div
                 key={item._id}
                 className="border rounded-lg bg-white p-6 cursor-pointer"
-                onClick={() => getIdProduct(item._id)}
+                // onClick={() => getIdProduct(item._id)}
               >
                 {item.price > item.discountPrice && (
                   <div className="bg-red-500 p-1 w-20 rounded flex items-center justify-center mb-1">
@@ -256,7 +261,7 @@ const Product = () => {
                   src={item.images?.[0] || noImage}
                   alt=""
                   loading="lazy"
-                  className="w-full h-48 object-cover mb-2 rounded"
+                  className=" w-full h-48 object-fill mb-2 rounded"
                 />
                 <h2 className="text-base text-gray-800 font-medium uppercase break-words line-clamp-1">
                   {item.name}
@@ -292,46 +297,32 @@ const Product = () => {
         )}
 
         {/* Pagination */}
-        <div className="flex justify-center mt-8 space-x-2">
+        <div className="flex flex-wrap justify-center items-center gap-2 mt-8 px-4">
           {/* Prev Group */}
           <button
             onClick={handlePrevGroup}
             disabled={pageGroup === 0}
-            className={`px-2 ${
+            className={`p-2 border rounded ${
               pageGroup === 0
                 ? "cursor-not-allowed opacity-50"
-                : "hover:bg-gray-200"
+                : "hover:bg-gray-100"
             }`}
-          ></button>
-
-          {/* Prev Page */}
-          {/* Prev Group */}
-          <button
-            onClick={handlePrevGroup}
-            disabled={pageGroup === 0}
-            className={`px-2 ${
-              pageGroup === 0
-                ? "cursor-not-allowed opacity-50"
-                : "hover:bg-gray-200"
-            }`}
+            aria-label="Previous group"
           >
             <FiChevronLeft size={20} />
           </button>
 
           {/* Page Numbers */}
-          {(endPage - startPage + 1 > 0
-            ? [...Array(endPage - startPage + 1)]
-            : []
-          ).map((_, idx) => {
-            const pageNumber = startPage + idx;
+          {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+            const pageNumber = startPage + index;
             return (
               <button
                 key={pageNumber}
                 onClick={() => handlePageChange(pageNumber)}
-                className={`w-10 h-10 flex items-center justify-center rounded-full  ${
+                className={`px-3 py-1 rounded border text-sm font-medium ${
                   pageNumber === page
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-700 hover:bg-gray-200"
+                    ? "bg-gray-800 text-white"
+                    : "hover:bg-gray-100 text-gray-800"
                 }`}
               >
                 {pageNumber}
@@ -339,31 +330,31 @@ const Product = () => {
             );
           })}
 
-          {/* Next Page */}
-          {/* Next Group */}
+          {/* Chevron Next */}
           <button
             onClick={handleNextGroup}
             disabled={(pageGroup + 1) * pagesPerGroup >= totalPages}
-            className={`px-2 ${
+            className={`p-2 border rounded ${
               (pageGroup + 1) * pagesPerGroup >= totalPages
                 ? "cursor-not-allowed opacity-50"
-                : "hover:bg-gray-200"
+                : "hover:bg-gray-100"
             }`}
+            aria-label="Next group"
           >
             <FiChevronRight size={20} />
           </button>
 
-          {/* Next Group */}
+          {/* Text "Next" Button */}
           <button
             onClick={handleNextGroup}
             disabled={(pageGroup + 1) * pagesPerGroup >= totalPages}
-            className={`px-2 ${
+            className={`px-3 py-1 rounded border text-sm font-medium ${
               (pageGroup + 1) * pagesPerGroup >= totalPages
-                ? "cursor-not-allowed opacity-50"
-                : "hover:bg-gray-200"
+                ? "cursor-not-allowed opacity-50 text-gray-400"
+                : "hover:bg-gray-100 text-gray-800"
             }`}
           >
-            <span className="text-sm font-medium text-gray-700">Next</span>
+            Next
           </button>
         </div>
       </div>
