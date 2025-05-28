@@ -451,6 +451,21 @@ const Product = () => {
             Next
           </button>
         </div>
+        <div className="mt-10 p-4">
+          <p className="text-3xl text-gray-600 font-medium mb-2">
+            Lapfix - the best Apple parts supplier
+          </p>
+          <p className="text-base text-gray-500 font-normal">
+            Apple is king when it comes to technology, whether it's because of
+            Apple's distinctive design, ease of use, or simply because Apple
+            products last longer. This means that having bought a MacBook or any
+            Mac accessories, you can be sure that Apple products will work for
+            you for many years. But we shouldn’t forget that technologies are
+            constantly evolving. And even if Apple replacement parts of your
+            MacBook were the last word in technology yesterday, they may no
+            longer be relevant today.
+          </p>
+        </div>
       </div>
     </div>
   );
