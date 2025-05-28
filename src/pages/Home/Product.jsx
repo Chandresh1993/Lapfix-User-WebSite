@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { use, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import noImage from "../../assets/no_image.png";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import Slider from "./Slider";
+import debounce from "lodash.debounce";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -182,6 +183,48 @@ const Product = () => {
     });
   };
 
+  //  ----------------sreach bar--------------------
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  // Create a ref to store the debounce function
+  const debouncedSearchRef = useRef();
+
+  const fetchSuggestions = useCallback(async (searchText) => {
+    if (!searchText.trim()) {
+      setSuggestions([]);
+      return;
+    }
+    setLoading(true);
+
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/product`, {
+        params: { search: searchText },
+      });
+
+      setSuggestions(res.data.products || []);
+    } catch (error) {
+      setSuggestions([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Initialize the debounce function once on mount
+  useEffect(() => {
+    debouncedSearchRef.current = debounce(fetchSuggestions, 300);
+
+    // Cleanup on unmount
+    return () => {
+      debouncedSearchRef.current?.cancel();
+    };
+  }, [fetchSuggestions]);
+
+  // Call debounced function when query changes
+  useEffect(() => {
+    debouncedSearchRef.current?.(query);
+  }, [query]);
+
   return (
     <div>
       {/* Header */}
@@ -222,6 +265,54 @@ const Product = () => {
         <p className="text-center text-gray-700 font-medium text-base mt-3">
           Store. The best way to buy the products you love
         </p>
+      </div>
+
+      <div className="flex items-center justify-center">
+        <div className="relative w-3/4 ">
+          <div>
+            <p className="text-lg text-gray-500 font-medium mb-2">
+              Easy Part Finder Tool
+            </p>
+          </div>
+          <input
+            type="text"
+            placeholder="Type to search..."
+            className="w-full px-4 py-2 border border-gray-300  focus:outline-none placeholder:text-sm"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+
+          {query && (
+            <ul className="absolute z-10 mt-1 w-full max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg">
+              {suggestions.length > 0 ? (
+                suggestions.map((product) => (
+                  <li
+                    key={product._id}
+                    onClick={() => getIdProduct(product._id)}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={product.images[0] || noImage}
+                        alt=""
+                        className="w-10 h-10 object-fill rounded"
+                      />
+                      <div className="flex flex-row items-center gap-4">
+                        <p className="text-base font-normal text-gray-700 uppercase">
+                          {product.name} <span>{product.year}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li className="p-2 text-gray-500 text-sm">
+                  Product not found.
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
       </div>
 
       {/* Banner Image */}
@@ -265,6 +356,9 @@ const Product = () => {
                 />
                 <h2 className="text-base text-gray-800 font-medium uppercase break-words line-clamp-1">
                   {item.name}
+                </h2>
+                <h2 className="text-base text-gray-800 font-medium uppercase break-words line-clamp-1">
+                  {item.year}
                 </h2>
                 <p className="text-sm text-gray-700 break-words line-clamp-2">
                   {item.description}
