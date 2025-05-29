@@ -86,7 +86,7 @@ const GetSingleProduct = () => {
                 {product.mainHeading}
               </h1>
               <p className="text-xl font-semibold text-black uppercase">
-                {product.name}
+                {product.name} - {product.year}
               </p>
             </div>
 

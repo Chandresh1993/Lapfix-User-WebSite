@@ -107,6 +107,9 @@ const SearchBar = ({ onClose }) => {
                   <p className="text-base font-normal text-black uppercase">
                     {product.name}
                   </p>
+                  <p className="text-base font-normal text-black uppercase">
+                    {product.year}
+                  </p>
                   <p className="text-red-600 font-medium text-sm ">
                     {formatPrice(product.price)}
                     {product.discountPrice && (
