@@ -231,21 +231,40 @@ const Product = () => {
 
       {/* Category Buttons */}
       <div className="flex justify-center bg-white  ">
-        <div className=" border-b border-t border-gray-200 w-full flex justify-center">
-          <div className="flex justify-center items-center ">
-            {categories.slice(0, 5).map((category) => (
-              <button
-                key={category._id}
-                onClick={() => handleCategoryClick(category._id)}
-                className={` px-2 md:px-5 py-4  hover:bg-gray-500 hover:text-white border border-r border-gray-200  text-sm md:text-base uppercase ${
-                  selectedCategoryId === category._id
-                    ? " text-black font-bold "
-                    : "text-gray-700 font-normal"
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
+        <div className=" border-b border-t border-gray-200 w-full flex justify-center ">
+          <div className=" hidden sm:grid">
+            <div className=" grid grid-cols-5 justify-center  items-center  ">
+              {categories.slice(0, 5).map((category) => (
+                <button
+                  key={category._id}
+                  onClick={() => handleCategoryClick(category._id)}
+                  className={` px-2  py-4  hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-200  text-sm md:text-base uppercase ${
+                    selectedCategoryId === category._id
+                      ? " text-black font-bold "
+                      : "text-gray-700 font-normal"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="grid sm:hidden">
+            <div className="grid  grid-cols-4 md:grid-cols-5 justify-center  items-center  ">
+              {categories.slice(0, 4).map((category) => (
+                <button
+                  key={category._id}
+                  onClick={() => handleCategoryClick(category._id)}
+                  className={` px-2  py-4  hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-200  text-sm md:text-base uppercase ${
+                    selectedCategoryId === category._id
+                      ? " text-black font-bold "
+                      : "text-gray-700 font-normal"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
