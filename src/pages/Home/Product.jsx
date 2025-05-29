@@ -270,7 +270,7 @@ const Product = () => {
       <div className="flex items-center justify-center">
         <div className="relative w-3/4 ">
           <div>
-            <p className="text-lg text-gray-500 font-medium mb-2">
+            <p className="text-lg text-center sm:text-left text-gray-500 font-medium mb-2">
               Easy Part Finder Tool
             </p>
           </div>
@@ -455,7 +455,7 @@ const Product = () => {
           <p className="text-3xl text-gray-600 font-medium mb-2">
             Lapfix - the best Apple parts supplier
           </p>
-          <p className="text-base text-gray-500 font-normal">
+          <p className="text-base text-gray-500 font-normal break-words">
             Apple is king when it comes to technology, whether it's because of
             Apple's distinctive design, ease of use, or simply because Apple
             products last longer. This means that having bought a MacBook or any
@@ -465,6 +465,37 @@ const Product = () => {
             MacBook were the last word in technology yesterday, they may no
             longer be relevant today.
           </p>
+        </div>
+        <div className="mt-5 p-4">
+          <p className="text-3xl text-gray-600 font-medium mb-2">
+            Apple parts store: assortment
+          </p>
+          <div className="flex flex-col gap-3">
+            <p className="text-base text-gray-500 font-normal break-words">
+              Even the most excellent laptop may drop, break, or get scratched
+              someday. The MacBook casing is also listed among the most used
+              Apple repair parts as it is not indestructible. In our Apple parts
+              store, you will find everything to update and repair your Macbook:
+              adapters, body parts, batteries, cables, logic boards, trackpads,
+              and other Apple repair parts for your Mac.
+            </p>
+            <p className="text-base text-gray-500 font-normal break-words">
+              Here, you may get authentic Apple parts for original accessories
+              replacement. Get the most recent deals on LCD screens with
+              touchpad modules, genuine displays with digitizers made of Gorilla
+              Glass, BMU flex cables, genuine power cords, trackpads (IPD),
+              bottom cases of various colors, and also some discounted batteries
+              and USB chargers. We are dedicated to bringing consumers the best
+              possible service. We are passionate about our work, and the
+              services you experience reflect our passion and good work. We
+              understand that every case is diverse.
+            </p>
+            <p className="text-base text-gray-500 font-normal break-words">
+              If you need Apple spare parts or repair service, relying on us is
+              the best choice. Go through our product range and do not hesitate
+              to ask questions, if any.
+            </p>
+          </div>
         </div>
       </div>
     </div>
