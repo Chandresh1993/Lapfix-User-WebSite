@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Loader from "../../components/Loader";
 import Footer from "../Home/Footer";
+import noImage from "../../assets/no_image.png";
 
 const GetSingleProduct = () => {
   const location = useLocation();
@@ -72,7 +73,7 @@ const GetSingleProduct = () => {
           <div className="bg-gray-200 w-full h-[500px] md:h-[1000px] py-28 px-10 shadow  flex items-center justify-center">
             <div className="w-full h-full">
               <img
-                src={product.images?.[0]}
+                src={product.images?.length ? product.images[0]?.url : noImage}
                 alt=""
                 className="w-full h-full object-fill"
               />

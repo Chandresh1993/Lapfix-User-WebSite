@@ -99,7 +99,9 @@ const SearchBar = ({ onClose }) => {
                 className="flex flex-row items-center gap-4"
               >
                 <img
-                  src={product.images[0] || noImage}
+                  src={
+                    product.images?.length ? product.images[0]?.url : noImage
+                  }
                   alt=""
                   className="w-16 h-16 object-fill rounded"
                 />
@@ -111,10 +113,10 @@ const SearchBar = ({ onClose }) => {
                     {product.year}
                   </p>
                   <p className="text-red-600 font-medium text-sm ">
-                    {formatPrice(product.price)}
+                    {formatPrice(product.discountPrice)}
                     {product.discountPrice && (
                       <span className="ml-2 line-through text-gray-500">
-                        {formatPrice(product.discountPrice)}
+                        {formatPrice(product.price)}
                       </span>
                     )}
                   </p>

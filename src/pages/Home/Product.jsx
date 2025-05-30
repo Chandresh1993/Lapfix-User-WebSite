@@ -312,13 +312,22 @@ const Product = () => {
                   >
                     <div className="flex items-center gap-4">
                       <img
-                        src={product.images[0] || noImage}
+                        src={
+                          product.images?.length
+                            ? product.images[0]?.url
+                            : noImage
+                        }
                         alt=""
                         className="w-10 h-10 object-fill rounded"
                       />
                       <div className="flex flex-row items-center gap-4">
                         <p className="text-base font-normal text-gray-700 uppercase">
                           {product.name} <span>{product.year}</span>
+                        </p>
+                      </div>
+                      <div className="flex flex-row items-center gap-4">
+                        <p className="text-base  text-red-500 font-medium uppercase">
+                          - ₹{formatCurrency(product.discountPrice)}
                         </p>
                       </div>
                     </div>
@@ -368,11 +377,12 @@ const Product = () => {
                   </div>
                 )}
                 <img
-                  src={item.images?.[0] || noImage}
+                  src={item.images?.length ? item.images[0]?.url : noImage}
                   alt=""
                   loading="lazy"
-                  className=" w-full h-48 object-fill mb-2 rounded"
+                  className="w-full h-48 object-fill mb-2 rounded"
                 />
+
                 <h2 className="text-base text-gray-800 font-medium uppercase break-words line-clamp-1">
                   {item.name}
                 </h2>
