@@ -39,7 +39,7 @@ const Sidebar = ({ onClose }) => {
         <X size={18} />
       </button>
       <div className="p-6 text-2xl font-bold text-gray-900 uppercase">
-        Golf Course
+        Lapfix
       </div>
 
       <ul className="p-4 space-y-3">

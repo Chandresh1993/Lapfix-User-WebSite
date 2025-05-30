@@ -18,7 +18,7 @@ const Footer = () => {
             <div className="h-full">
               <div className="w-48">
                 <p className="text-white font-bold text-4xl uppercase">
-                  GolfCource
+                  Lapfix
                 </p>
               </div>
               <div className="mt-7">
@@ -36,9 +36,7 @@ const Footer = () => {
             <div>
               <p className="text-3xl font-semibold text-white">Contact us</p>
               <div className="mt-5">
-                <p className="text-lg font-semibold text-white">
-                  ParkGenie Private Limited
-                </p>
+                <p className="text-lg font-semibold text-white">Lapfix</p>
               </div>
 
               <div className="mt-3 flex flex-col gap-2">
