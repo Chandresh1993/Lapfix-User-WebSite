@@ -73,7 +73,7 @@ const GetSingleProduct = () => {
           <div className="bg-gray-200 w-full h-[500px] md:h-[1000px] py-28 px-10 shadow  flex items-center justify-center">
             <div className="w-full h-full">
               <img
-                src={product.images?.length ? product.images[0]?.url : noImage}
+                src={product.images[0]?.url ? product.images[0]?.url : noImage}
                 alt=""
                 className="w-full h-full object-fill"
               />
