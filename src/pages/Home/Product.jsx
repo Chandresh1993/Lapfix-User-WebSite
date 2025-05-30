@@ -334,7 +334,7 @@ const Product = () => {
                   </li>
                 ))
               ) : (
-                <li className="p-2 text-gray-500 text-sm">
+                <li className="p-2 text-red-500 font-medium text-sm">
                   Product not found.
                 </li>
               )}

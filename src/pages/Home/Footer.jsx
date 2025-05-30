@@ -67,7 +67,7 @@ const Footer = () => {
                     <Email className="w-full h-full object-contain fill-white" />
                   </div>
                   <div>
-                    <a href="mailto:Info@uweens.com">
+                    <a href="mailto:Kashyapindustry@gmail.com">
                       <p className="text-base font-normal text-white break-words">
                         Kashyapindustry@gmail.com
                       </p>
@@ -81,7 +81,7 @@ const Footer = () => {
                     <PhoneIcon className="w-6 h-6 fill-white object-contain" />
                   </div>
                   <div>
-                    <a href="tel:+91-9999229332 ">
+                    <a href="tel:+91-9999229332">
                       <p className="text-base font-normal text-white break-words">
                         9999229332 / 9999449337 / 9999009336 /9999700766
                       </p>
