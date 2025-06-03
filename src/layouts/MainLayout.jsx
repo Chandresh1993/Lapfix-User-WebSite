@@ -16,7 +16,7 @@ const MainLayout = ({ children }) => {
   };
 
   return (
-    <div className="workspace flex h-screen overflow-hidden relative">
+    <div className=" workspace  flex h-screen overflow-hidden relative">
       {/* Sidebar */}
       <div
         className={`absolute z-40 inset-y-0 left-0 w-64 

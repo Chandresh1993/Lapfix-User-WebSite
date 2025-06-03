@@ -6,6 +6,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import Slider from "./Slider";
 import debounce from "lodash.debounce";
+import Newproduct from "../product/Newproduct";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -18,18 +19,19 @@ const Product = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [pageGroup, setPageGroup] = useState(0); // start from 0 (first 6 pages group)
   const pagesPerGroup = 6;
+  const [mainCategoryName, setMainCatgeoryName] = useState("");
 
   const [searchParams] = useSearchParams();
-  const subCategoryName = searchParams.get("subCategoryName") || "";
+  const subCategoryId = searchParams.get("subCategoryId") || "";
 
   const navigation = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (subCategoryName) {
+    if (subCategoryId) {
       setSelectedCategoryId("");
     }
-  }, [subCategoryName]);
+  }, [subCategoryId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +43,7 @@ const Product = () => {
         } else if (selectedCategoryId) {
           await getAllProductsByCategory(page, limit, selectedCategoryId);
         } else {
-          await getAllProducts(page, limit, subCategoryName);
+          await getAllProducts(page, limit, subCategoryId);
         }
       } catch (err) {
         console.error("Error fetching products", err);
@@ -55,7 +57,7 @@ const Product = () => {
     page,
     limit,
     selectedCategoryId,
-    subCategoryName,
+    subCategoryId,
     location.state?.fromHeader,
   ]);
 
@@ -93,7 +95,7 @@ const Product = () => {
     }
   };
 
-  const getAllProducts = async (page, limit, subCategoryName) => {
+  const getAllProducts = async (page, limit, subCategoryId) => {
     setLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/product`, {
@@ -101,9 +103,24 @@ const Product = () => {
           page,
           limit,
 
-          subCategoryName: subCategoryName || undefined,
+          subCategoryId: subCategoryId || undefined,
         },
       });
+
+      // Fetch Main Category Name
+
+      const MainCatgeoyrName = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/subCategory/${subCategoryId}`
+      );
+
+      if (
+        MainCatgeoyrName.data &&
+        MainCatgeoyrName.data.mainCategoryId &&
+        MainCatgeoyrName.data.mainCategoryId.name
+      ) {
+        setMainCatgeoryName(MainCatgeoyrName.data.mainCategoryId.name);
+      }
+
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
       setTotalCount(res.data.total || 0);
@@ -230,18 +247,37 @@ const Product = () => {
       {/* Header */}
 
       {/* Category Buttons */}
-      <div className="flex justify-center bg-white  ">
-        <div className=" border-b border-t border-gray-200 w-full flex justify-center ">
-          <div className=" hidden sm:grid">
+      <div className="">
+        <Slider></Slider>
+      </div>
+      <div className="pt-10 pb-4  p-4">
+        {mainCategoryName ? (
+          <p className="text-3xl text-center font-extrabold text-black uppercase">
+            {mainCategoryName}
+          </p>
+        ) : (
+          <p className="text-3xl text-center font-extrabold text-black uppercase">
+            Explore
+          </p>
+        )}
+        <p className="text-center text-black font-medium text-base mt-3">
+          Store. The best way to buy the products you love
+        </p>
+      </div>
+      {/* -----------------------Header Sreach start--------- */}
+
+      <div className="flex justify-center mt-5  ">
+        <div className=" w-full flex justify-center ">
+          <div className=" hidden sm:grid shadow-sm">
             <div className=" grid grid-cols-5 justify-center  items-center  ">
-              {categories.slice(0, 5).map((category) => (
+              {categories.slice(0, 7).map((category) => (
                 <button
                   key={category._id}
                   onClick={() => handleCategoryClick(category._id)}
-                  className={` px-2  py-4  hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-200  text-sm md:text-base uppercase ${
+                  className={` px-2  py-4  hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300  text-sm md:text-base uppercase ${
                     selectedCategoryId === category._id
-                      ? " text-black font-bold "
-                      : "text-gray-700 font-normal"
+                      ? " text-white font-medium bg-gray-500 "
+                      : "text-black font-normal"
                   }`}
                 >
                   {category.name}
@@ -249,16 +285,16 @@ const Product = () => {
               ))}
             </div>
           </div>
-          <div className="grid sm:hidden">
-            <div className="grid  grid-cols-4 md:grid-cols-5 justify-center  items-center  ">
+          <div className="grid sm:hidden shadow-sm ">
+            <div className=" grid grid-cols-5 justify-center  items-center  ">
               {categories.slice(0, 4).map((category) => (
                 <button
                   key={category._id}
                   onClick={() => handleCategoryClick(category._id)}
-                  className={` px-2  py-4  hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-200  text-sm md:text-base uppercase ${
+                  className={` px-2  py-4  hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300  text-sm md:text-base uppercase ${
                     selectedCategoryId === category._id
-                      ? " text-black font-bold "
-                      : "text-gray-700 font-normal"
+                      ? " text-white font-medium bg-gray-500 "
+                      : "text-black font-normal"
                   }`}
                 >
                   {category.name}
@@ -268,35 +304,20 @@ const Product = () => {
           </div>
         </div>
       </div>
-      <div className="">
-        <Slider></Slider>
-      </div>
-      <div className="pt-10 pb-4  p-4">
-        {subCategoryName ? (
-          <p className="text-3xl text-center font-extrabold text-black uppercase">
-            {subCategoryName}
-          </p>
-        ) : (
-          <p className="text-3xl text-center font-extrabold text-black uppercase">
-            Shop Now
-          </p>
-        )}
-        <p className="text-center text-gray-700 font-medium text-base mt-3">
-          Store. The best way to buy the products you love
-        </p>
-      </div>
 
-      <div className="flex items-center justify-center">
-        <div className="relative w-3/4 ">
+      {/* ------------------------Header sreach end------------------------- */}
+
+      <div className="flex items-center justify-center mt-6">
+        <div className="relative w-4/5 ">
           <div>
-            <p className="text-lg text-center sm:text-left text-gray-500 font-medium mb-2">
+            <p className="text-lg text-center sm:text-left text-gray-800 font-medium mb-2">
               Easy Part Finder Tool
             </p>
           </div>
           <input
             type="text"
             placeholder="Type to search..."
-            className="w-full px-4 py-2 border border-gray-300  focus:outline-none placeholder:text-sm"
+            className="w-full px-4 py-2 border border-gray-300 rounded-sm  focus:outline-none placeholder:text-sm"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -365,17 +386,22 @@ const Product = () => {
                 className="border rounded-lg bg-white p-6 cursor-pointer"
                 onClick={() => getIdProduct(item._id)}
               >
-                {item.price > item.discountPrice && (
-                  <div className="bg-red-500 p-1 w-20 rounded flex items-center justify-center mb-1">
-                    <p className="text-xs text-white font-medium">
-                      Save{" "}
-                      {Math.round(
-                        ((item.price - item.discountPrice) / item.price) * 100
-                      )}
-                      %
-                    </p>
-                  </div>
-                )}
+                <div className="h-6 mb-1">
+                  {item.price > item.discountPrice ? (
+                    <div className="bg-red-500 p-1 w-20 rounded flex items-center justify-center">
+                      <p className="text-xs text-white font-medium uppercase">
+                        Save{" "}
+                        {Math.round(
+                          ((item.price - item.discountPrice) / item.price) * 100
+                        )}
+                        %
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="w-20">&nbsp;</div> // Empty placeholder of same size
+                  )}
+                </div>
+
                 <img
                   src={item.images?.length ? item.images[0]?.url : noImage}
                   alt=""
@@ -383,24 +409,28 @@ const Product = () => {
                   className="w-full h-48 object-fill mb-2 rounded"
                 />
 
-                <h2 className="text-base text-gray-800 font-medium uppercase break-words line-clamp-1">
-                  {item.name}
-                </h2>
-                <h2 className="text-base text-gray-800 font-medium uppercase break-words line-clamp-1">
-                  {item.year}
-                </h2>
-                <p className="text-sm text-gray-700 break-words line-clamp-2">
-                  {item.description}
-                </p>
-                <div className="text-base font-normal flex gap-4 mt-2">
-                  <p className="text-red-500 font-bold">
-                    ₹{formatCurrency(item.discountPrice)}
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <h2 className="text-base text-black items-center  font-normal uppercase text-center  line-clamp-1">
+                    {item.name}
+                  </h2>
+                  <h2 className="text-base text-black font-normal  uppercase text-center  line-clamp-1">
+                    {item.year}
+                  </h2>
+                  <p className="text-sm text-black font-normal break-words text-center line-clamp-2">
+                    {item.description}
                   </p>
-                  <p className="line-through text-gray-500 font-semibold text-base">
-                    ₹{formatCurrency(item.price)}
-                  </p>
+                  <div className=" flex justify-center">
+                    <div className="text-base  font-normal flex gap-4 ">
+                      <p className="text-red-500 font-medium">
+                        ₹{formatCurrency(item.discountPrice)}
+                      </p>
+                      <p className="line-through text-gray-500 font-medium text-base">
+                        ₹{formatCurrency(item.price)}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-xs mt-1">
+                {/* <p className="text-xs mt-1">
                   <span className="font-medium text-gray-700">In Stock:</span>{" "}
                   <span
                     className={
@@ -413,7 +443,7 @@ const Product = () => {
                   >
                     {item.quantity} pcs
                   </span>
-                </p>
+                </p> */}
               </div>
             ))}
           </div>
@@ -445,7 +475,7 @@ const Product = () => {
                 className={`px-3 py-1 rounded border text-sm font-medium ${
                   pageNumber === page
                     ? "bg-gray-800 text-white"
-                    : "hover:bg-gray-100 text-gray-800"
+                    : "hover:bg-gray-100 text-black"
                 }`}
               >
                 {pageNumber}
@@ -480,8 +510,12 @@ const Product = () => {
             Next
           </button>
         </div>
+
+        <div className="bg-white py-10 mt-8">
+          <Newproduct></Newproduct>
+        </div>
         <div className="mt-10 p-4">
-          <p className="text-3xl text-gray-600 font-medium mb-2">
+          <p className="text-3xl text-gray-800 font-medium mb-2">
             Lapfix - the best Apple parts supplier
           </p>
           <p className="text-base text-gray-500 font-normal break-words">
@@ -496,7 +530,7 @@ const Product = () => {
           </p>
         </div>
         <div className="mt-5 p-4">
-          <p className="text-3xl text-gray-600 font-medium mb-2">
+          <p className="text-3xl text-gray-800 font-medium mb-2">
             Apple parts store: assortment
           </p>
           <div className="flex flex-col gap-3">

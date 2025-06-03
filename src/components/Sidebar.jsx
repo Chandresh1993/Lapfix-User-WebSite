@@ -29,8 +29,8 @@ const Sidebar = ({ onClose }) => {
     setOpenMain(openMain === index ? null : index);
   };
 
-  const handlesubHeading = (name) => {
-    navigation(`?subCategoryName=${name}`);
+  const handlesubHeading = (id) => {
+    navigation(`?subCategoryId=${id}`);
   };
 
   return (
@@ -67,15 +67,17 @@ const Sidebar = ({ onClose }) => {
               }`}
             >
               {mainItem.subCategories.length > 0 && (
-                <ul className="pl-4 mt-2 space-y-2">
+                <ul className="pl-3  mt-2 space-y-2 text-black">
                   {mainItem.subCategories.map((subItem) => (
-                    <li key={subItem._id}>
-                      <div
-                        onClick={() => handlesubHeading(subItem.name)}
-                        className="text-sm font-normal text-gray-700 hover:bg-blue-200 transition duration-300 ease-in-out px-3 py-1 cursor-pointer rounded"
-                      >
-                        {subItem.name}
-                      </div>
+                    <li
+                      key={subItem._id}
+                      onClick={() => {
+                        handlesubHeading(subItem._id);
+                        onClose();
+                      }}
+                      className="text-sm font-normal  hover:bg-gray-200 transition duration-300 ease-in-out px-1 py-1 line-clamp-2 cursor-pointer rounded"
+                    >
+                      {subItem.name}
                     </li>
                   ))}
                 </ul>

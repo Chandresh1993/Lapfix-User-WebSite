@@ -5,7 +5,7 @@ import { ReactComponent as PhoneIcon } from "../../assets/phone-icon.svg";
 import { ReactComponent as Email } from "../../assets/Email-icon 2.svg";
 
 import { ReactComponent as Intagram } from "../../assets/black-instagram-icon.svg";
-
+import { ReactComponent as Youtube } from "../../assets/youtube-icon.svg";
 const Footer = () => {
   return (
     <div>
@@ -47,7 +47,7 @@ const Footer = () => {
                   </div>
                   <div>
                     <a
-                      href="https://maps.app.goo.gl/S5J4PQ3mGQzLFpDK6"
+                      href="https://maps.app.goo.gl/GoFUjkfpR5XcVjWW9"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -102,6 +102,14 @@ const Footer = () => {
                     className="w-5"
                   >
                     <Intagram className="w-5 h-5 fill-white" />
+                  </a>
+                  <a
+                    href="https://www.youtube.com/@LAPFIXINDIA" // Replace with your actual YouTube link
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10"
+                  >
+                    <Youtube className="w-10 h-10 fill-white" />
                   </a>
                 </div>
               </div>
