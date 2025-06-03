@@ -34,6 +34,12 @@ const Product = () => {
   }, [subCategoryId]);
 
   useEffect(() => {
+    if (location.state?.fromHeader) {
+      setMainCatgeoryName("Explore");
+    }
+  }, [location.state?.fromHeader]);
+
+  useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -242,6 +248,8 @@ const Product = () => {
     debouncedSearchRef.current?.(query);
   }, [query]);
 
+  useEffect(() => {}, []);
+
   return (
     <div>
       {/* Header */}
@@ -311,7 +319,7 @@ const Product = () => {
         <div className="relative w-4/5 ">
           <div>
             <p className="text-lg text-center sm:text-left text-gray-800 font-medium mb-2">
-              Easy Part Finder Tool
+              Search
             </p>
           </div>
           <input
@@ -363,6 +371,68 @@ const Product = () => {
           )}
         </div>
       </div>
+
+      {/* ----------Sreach by year start here--------------- */}
+      <div>
+        <div className="flex items-center justify-center mt-6">
+          <div className="relative w-4/5 ">
+            <div>
+              <p className="text-lg text-center sm:text-left text-gray-800 font-medium mb-2">
+                Easy Part Finder Tool
+              </p>
+            </div>
+            <input
+              type="text"
+              placeholder="Type to search..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-sm  focus:outline-none placeholder:text-sm"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+
+            {query && (
+              <ul className="absolute z-10 mt-1 w-full max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg">
+                {suggestions.length > 0 ? (
+                  suggestions.map((product) => (
+                    <li
+                      key={product._id}
+                      onClick={() => getIdProduct(product._id)}
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={
+                            product.images?.length
+                              ? product.images[0]?.url
+                              : noImage
+                          }
+                          alt=""
+                          className="w-10 h-10 object-fill rounded"
+                        />
+                        <div className="flex flex-row items-center gap-4">
+                          <p className="text-base font-normal text-gray-700 uppercase">
+                            {product.name} <span>{product.year}</span>
+                          </p>
+                        </div>
+                        <div className="flex flex-row items-center gap-4">
+                          <p className="text-base  text-red-500 font-medium uppercase">
+                            - ₹{formatCurrency(product.discountPrice)}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <li className="p-2 text-red-500 font-medium text-sm">
+                    Product not found.
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ----------Sreach by year end here--------------- */}
 
       {/* Banner Image */}
       <div className="p-4 ">

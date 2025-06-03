@@ -30,7 +30,7 @@ const Sidebar = ({ onClose }) => {
   };
 
   const handlesubHeading = (id) => {
-    navigation(`?subCategoryId=${id}`);
+    navigation(`/?subCategoryId=${id}`);
   };
 
   return (

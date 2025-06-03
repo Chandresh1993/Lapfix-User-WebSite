@@ -62,7 +62,7 @@ const GetSingleProduct = () => {
   return (
     <div>
       <div className=" workspace  h-full p-4 ">
-        <div className="font-normal text-base text-gray-500">
+        <div className="font-normal text-base text-gray-500 uppercase">
           Home /{" "}
           <span className="text-gray-900 font-normal">
             {product.subCategoryID.name}
@@ -169,25 +169,25 @@ const GetSingleProduct = () => {
               </button>
             </div>
 
-            <div>
-              <p className="text-gray-700">
-                <span className="font-semibold">Available Quantity:</span>
-                {product.quantity} Pcs
-              </p>
-            </div>
+            <div className="flex flex-col justify-center gap-4 mt-3">
+              <div className="">
+                <h3 className="font-medium text-lg  text-black">
+                  Available Quantity
+                </h3>
+                <p className="text-gray-800">{product.quantity} pcs </p>
+              </div>
 
-            <div className="mt-1">
-              <h3 className="font-semibold text-lg  text-gray-800">
-                Description
-              </h3>
-              <p className="text-gray-600">{product.description}</p>
-            </div>
+              <div className="">
+                <h3 className="font-medium text-lg  text-black">Description</h3>
+                <p className="text-gray-800">{product.description}</p>
+              </div>
 
-            <div className="mt-1">
-              <h3 className="font-semibold text-lg  text-gray-800">
-                How to Install & Tips
-              </h3>
-              <p className="text-gray-600">{product.howToInstallAndTips}</p>
+              <div className="">
+                <h3 className="font-medium text-lg  text-black">
+                  How to Install & Tips
+                </h3>
+                <p className="text-gray-800">{product.howToInstallAndTips}</p>
+              </div>
             </div>
           </div>
         </div>
