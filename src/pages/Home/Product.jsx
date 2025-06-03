@@ -23,6 +23,10 @@ const Product = () => {
 
   const [searchParams] = useSearchParams();
   const subCategoryId = searchParams.get("subCategoryId") || "";
+  const [allSubCategory, setAllSubCategory] = useState([]);
+  const [selectedSubCatId, setSelectedSubCatId] = useState("");
+  const [productByCtageoryId, setProductByCtageoryId] = useState([]);
+  const [selectedProductId, setSelectedProductId] = useState("");
 
   const navigation = useNavigate();
   const location = useLocation();
@@ -248,7 +252,43 @@ const Product = () => {
     debouncedSearchRef.current?.(query);
   }, [query]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getAllSubCatgeory();
+  }, []);
+
+  const getAllSubCatgeory = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/subCategory`
+      );
+
+      setAllSubCategory(res.data);
+    } catch (err) {
+      console.error("Failed to fetch subCategory", err);
+    }
+  };
+
+  const getProductBySubCategoryName = async (id) => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/product?subCategoryId=${id}`
+      );
+
+      setProductByCtageoryId(res.data.products);
+    } catch (err) {
+      console.error("Failed to fetch Product by SubCategoryId", err);
+    }
+  };
+
+  const handleSelection = (e) => {
+    const selectedId = e.target.value;
+    setSelectedSubCatId(selectedId);
+    getProductBySubCategoryName(selectedId);
+  };
+
+  const handleProductSelect = (e) => {
+    setSelectedProductId(e.target.value);
+  };
 
   return (
     <div>
@@ -374,60 +414,51 @@ const Product = () => {
 
       {/* ----------Sreach by year start here--------------- */}
       <div>
-        <div className="flex items-center justify-center mt-6">
+        <div className="flex items-center justify-center mt-8">
           <div className="relative w-4/5 ">
             <div>
               <p className="text-lg text-center sm:text-left text-gray-800 font-medium mb-2">
                 Easy Part Finder Tool
               </p>
             </div>
-            <input
-              type="text"
-              placeholder="Type to search..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-sm  focus:outline-none placeholder:text-sm"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
 
-            {query && (
-              <ul className="absolute z-10 mt-1 w-full max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg">
-                {suggestions.length > 0 ? (
-                  suggestions.map((product) => (
-                    <li
-                      key={product._id}
-                      onClick={() => getIdProduct(product._id)}
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={
-                            product.images?.length
-                              ? product.images[0]?.url
-                              : noImage
-                          }
-                          alt=""
-                          className="w-10 h-10 object-fill rounded"
-                        />
-                        <div className="flex flex-row items-center gap-4">
-                          <p className="text-base font-normal text-gray-700 uppercase">
-                            {product.name} <span>{product.year}</span>
-                          </p>
-                        </div>
-                        <div className="flex flex-row items-center gap-4">
-                          <p className="text-base  text-red-500 font-medium uppercase">
-                            - ₹{formatCurrency(product.discountPrice)}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <li className="p-2 text-red-500 font-medium text-sm">
-                    Product not found.
-                  </li>
-                )}
-              </ul>
-            )}
+            <div className="grid grid-cols-3 items-center">
+              <select
+                value={selectedSubCatId}
+                onChange={handleSelection}
+                className="w-full px-4 py-3 border optional:text-sm border-gray-300 optional:text-gray-800 bg-white rounded-sm focus:outline-none text-sm"
+              >
+                <option disabled value="">
+                  Select Model
+                </option>
+                {allSubCategory.map((subCat) => (
+                  <option key={subCat._id} value={subCat._id}>
+                    {subCat.name}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={selectedProductId}
+                onChange={handleProductSelect}
+                className="w-full px-4 py-3 border border-gray-300 text-gray-800 bg-white rounded-sm focus:outline-none text-sm"
+              >
+                <option disabled value="">
+                  Select Products
+                </option>
+                {productByCtageoryId.map((product) => (
+                  <option key={product._id} value={product._id}>
+                    {product.name}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                className="bg-black text-white py-2 border border-black rounded-sm 
+             transition-all duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+              >
+                Submit
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -48,7 +48,7 @@ const Sidebar = ({ onClose }) => {
             <div className="border-b border-gray-300">
               <button
                 onClick={() => toggleMain(mainIdx)}
-                className="flex items-center justify-between w-full text-left font-medium  px-1 hover:bg-blue-300 transition duration-300 ease-in-out text-gray-900  py-2  text-base uppercase   rounded"
+                className="flex items-center justify-between w-full text-left font-medium  px-1 hover:bg-gray-700 hover:text-white transition duration-300 ease-in-out text-gray-900  py-2  text-base uppercase   rounded"
               >
                 {mainItem.name}
                 <span
@@ -75,7 +75,7 @@ const Sidebar = ({ onClose }) => {
                         handlesubHeading(subItem._id);
                         onClose();
                       }}
-                      className="text-sm font-normal  hover:bg-gray-200 transition duration-300 ease-in-out px-1 py-1 line-clamp-2 cursor-pointer rounded"
+                      className="text-sm font-normal  hover:bg-gray-500 hover:text-white transition duration-300 ease-in-out px-1 py-1 line-clamp-2 cursor-pointer rounded"
                     >
                       {subItem.name}
                     </li>
