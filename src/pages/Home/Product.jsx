@@ -1,11 +1,11 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import noImage from "../../assets/no_image.png";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import Slider from "./Slider";
-import debounce from "lodash.debounce";
+
 import Newproduct from "../product/Newproduct";
 
 const Product = () => {
@@ -210,53 +210,12 @@ const Product = () => {
     });
   };
 
-  //  ----------------sreach bar--------------------
-  const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-
-  // Create a ref to store the debounce function
-  const debouncedSearchRef = useRef();
-
-  const fetchSuggestions = useCallback(async (searchText) => {
-    if (!searchText.trim()) {
-      setSuggestions([]);
-      return;
-    }
-    setLoading(true);
-
-    try {
-      const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/product`, {
-        params: { search: searchText },
-      });
-
-      setSuggestions(res.data.products || []);
-    } catch (error) {
-      setSuggestions([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Initialize the debounce function once on mount
-  useEffect(() => {
-    debouncedSearchRef.current = debounce(fetchSuggestions, 300);
-
-    // Cleanup on unmount
-    return () => {
-      debouncedSearchRef.current?.cancel();
-    };
-  }, [fetchSuggestions]);
-
-  // Call debounced function when query changes
-  useEffect(() => {
-    debouncedSearchRef.current?.(query);
-  }, [query]);
-
   useEffect(() => {
     getAllSubCatgeory();
   }, []);
 
   const getAllSubCatgeory = async () => {
+    setLoading(true);
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/subCategory`
@@ -265,10 +224,13 @@ const Product = () => {
       setAllSubCategory(res.data);
     } catch (err) {
       console.error("Failed to fetch subCategory", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getProductBySubCategoryName = async (id) => {
+    setLoading(true);
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/product?subCategoryId=${id}`
@@ -277,6 +239,8 @@ const Product = () => {
       setProductByCtageoryId(res.data.products);
     } catch (err) {
       console.error("Failed to fetch Product by SubCategoryId", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -288,6 +252,23 @@ const Product = () => {
 
   const handleProductSelect = (e) => {
     setSelectedProductId(e.target.value);
+  };
+
+  const handleClickSreachProduct = async (id) => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/product?productId=${id}`
+      );
+      setProducts(res.data.products);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handelSendCatgeoryName = (name) => {
+    setMainCatgeoryName(name);
   };
 
   return (
@@ -316,15 +297,18 @@ const Product = () => {
 
       <div className="flex justify-center mt-5  ">
         <div className=" w-full flex justify-center ">
-          <div className=" hidden sm:grid shadow-sm">
+          <div className=" hidden lg:grid shadow-sm">
             <div className=" grid grid-cols-5 justify-center  items-center  ">
               {categories.slice(0, 7).map((category) => (
                 <button
                   key={category._id}
-                  onClick={() => handleCategoryClick(category._id)}
-                  className={` px-2  py-4  hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300  text-sm md:text-base uppercase ${
+                  onClick={() => {
+                    handleCategoryClick(category._id);
+                    handelSendCatgeoryName(category.name);
+                  }}
+                  className={`px-2 py-4 hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300 text-sm md:text-base uppercase ${
                     selectedCategoryId === category._id
-                      ? " text-white font-medium bg-gray-500 "
+                      ? "text-white font-medium bg-gray-500"
                       : "text-black font-normal"
                   }`}
                 >
@@ -333,13 +317,13 @@ const Product = () => {
               ))}
             </div>
           </div>
-          <div className="grid sm:hidden shadow-sm ">
-            <div className=" grid grid-cols-5 justify-center  items-center  ">
+          <div className="grid lg:hidden shadow-sm ">
+            <div className=" grid grid-cols-4 justify-center  items-center  ">
               {categories.slice(0, 4).map((category) => (
                 <button
                   key={category._id}
                   onClick={() => handleCategoryClick(category._id)}
-                  className={` px-2  py-4  hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300  text-sm md:text-base uppercase ${
+                  className={` h-14 px-2   hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300  text-sm md:text-base uppercase ${
                     selectedCategoryId === category._id
                       ? " text-white font-medium bg-gray-500 "
                       : "text-black font-normal"
@@ -355,63 +339,6 @@ const Product = () => {
 
       {/* ------------------------Header sreach end------------------------- */}
 
-      <div className="flex items-center justify-center mt-6">
-        <div className="relative w-4/5 ">
-          <div>
-            <p className="text-lg text-center sm:text-left text-gray-800 font-medium mb-2">
-              Search
-            </p>
-          </div>
-          <input
-            type="text"
-            placeholder="Type to search..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-sm  focus:outline-none placeholder:text-sm"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-
-          {query && (
-            <ul className="absolute z-10 mt-1 w-full max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg">
-              {suggestions.length > 0 ? (
-                suggestions.map((product) => (
-                  <li
-                    key={product._id}
-                    onClick={() => getIdProduct(product._id)}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={
-                          product.images?.length
-                            ? product.images[0]?.url
-                            : noImage
-                        }
-                        alt=""
-                        className="w-10 h-10 object-fill rounded"
-                      />
-                      <div className="flex flex-row items-center gap-4">
-                        <p className="text-base font-normal text-gray-700 uppercase">
-                          {product.name} <span>{product.year}</span>
-                        </p>
-                      </div>
-                      <div className="flex flex-row items-center gap-4">
-                        <p className="text-base  text-red-500 font-medium uppercase">
-                          - ₹{formatCurrency(product.discountPrice)}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <li className="p-2 text-red-500 font-medium text-sm">
-                  Product not found.
-                </li>
-              )}
-            </ul>
-          )}
-        </div>
-      </div>
-
       {/* ----------Sreach by year start here--------------- */}
       <div>
         <div className="flex items-center justify-center mt-8">
@@ -422,7 +349,7 @@ const Product = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 items-center">
+            <div className="grid grid-rows-1 md:grid-cols-3 items-center">
               <select
                 value={selectedSubCatId}
                 onChange={handleSelection}
@@ -453,8 +380,9 @@ const Product = () => {
               </select>
 
               <button
+                onClick={() => handleClickSreachProduct(selectedProductId)}
                 className="bg-black text-white py-2 border border-black rounded-sm 
-             transition-all duration-300 ease-in-out hover:bg-gray-800 hover:text-white"
+             transition-all duration-300 ease-in-out hover:bg-gray-800 hover:text-white font-medium"
               >
                 Submit
               </button>
@@ -480,11 +408,11 @@ const Product = () => {
         {loading ? (
           <Loader />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 p-4 ">
             {products.map((item) => (
               <div
                 key={item._id}
-                className="border rounded-lg bg-white p-6 cursor-pointer"
+                className="border rounded-lg bg-white p-6 cursor-pointer transition-all duration-300 transform hover:scale-[1.02] hover:drop-shadow-lg"
                 onClick={() => getIdProduct(item._id)}
               >
                 <div className="h-6 mb-1">

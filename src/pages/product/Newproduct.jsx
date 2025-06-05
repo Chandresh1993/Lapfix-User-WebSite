@@ -54,7 +54,7 @@ const Newproduct = () => {
           {products.slice(0, 8).map((item) => (
             <div
               key={item._id}
-              className="border rounded-lg bg-white p-6 cursor-pointer"
+              className="border rounded-lg bg-white p-6 cursor-pointer transition-all duration-300 transform hover:scale-[1.02] hover:drop-shadow-lg"
               onClick={() => getIdProduct(item._id)}
             >
               <div className="h-6 mb-1">
