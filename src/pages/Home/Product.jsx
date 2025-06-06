@@ -298,7 +298,7 @@ const Product = () => {
       <div className="flex justify-center mt-5  ">
         <div className=" w-full flex justify-center ">
           <div className=" hidden lg:grid shadow-sm">
-            <div className=" grid grid-cols-5 justify-center  items-center  ">
+            <div className=" grid grid-cols-7 justify-center  items-center  ">
               {categories.slice(0, 7).map((category) => (
                 <button
                   key={category._id}
