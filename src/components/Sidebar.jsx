@@ -81,9 +81,7 @@ const Sidebar = ({ onClose }) => {
                     >
                       <div className="flex items-center gap-1 truncate">
                         {/* Merge index and name in one block to prevent breaking */}
-                        <p className="truncate">
-                          {mainIdx + 1}. {mainCat.name}
-                        </p>
+                        <p className="truncate">{mainCat.name}</p>
                       </div>
 
                       <div

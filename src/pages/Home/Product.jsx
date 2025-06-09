@@ -80,6 +80,7 @@ const Product = () => {
           limit,
         },
       });
+
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
       setTotalCount(res.data.total || 0);
@@ -97,7 +98,7 @@ const Product = () => {
   const getCategory = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/mainCategory`
+        `${process.env.REACT_APP_BASE_URL}/firstCatgeory`
       );
       setCategories(res.data);
     } catch (error) {
@@ -122,7 +123,6 @@ const Product = () => {
       const MainCatgeoyrName = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/subCategory/${subCategoryId}`
       );
-
       if (
         MainCatgeoyrName.data &&
         MainCatgeoyrName.data.mainCategoryId &&
@@ -141,14 +141,18 @@ const Product = () => {
     }
   };
 
-  const getAllProductsByCategory = async (page, limit, mainCategoryId = "") => {
+  const getAllProductsByCategory = async (
+    page,
+    limit,
+    firstCategoryId = ""
+  ) => {
     setLoading(true);
     try {
       const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/product`, {
         params: {
           page,
           limit,
-          mainCategoryId: mainCategoryId || undefined,
+          firstCategoryId: firstCategoryId || undefined,
         },
       });
 
@@ -298,7 +302,7 @@ const Product = () => {
       <div className="flex justify-center mt-5  ">
         <div className=" w-full flex justify-center ">
           <div className=" hidden lg:grid shadow-sm">
-            <div className=" grid grid-cols-7 justify-center  items-center  ">
+            <div className="flex w-full">
               {categories.slice(0, 7).map((category) => (
                 <button
                   key={category._id}
@@ -306,7 +310,7 @@ const Product = () => {
                     handleCategoryClick(category._id);
                     handelSendCatgeoryName(category.name);
                   }}
-                  className={`px-2 py-4 hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300 text-sm md:text-base uppercase ${
+                  className={`basis-0 flex-1 px-14 py-4 hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300 text-sm md:text-base uppercase truncate ${
                     selectedCategoryId === category._id
                       ? "text-white font-medium bg-gray-500"
                       : "text-black font-normal"
@@ -318,14 +322,17 @@ const Product = () => {
             </div>
           </div>
           <div className="grid lg:hidden shadow-sm ">
-            <div className=" grid grid-cols-4 justify-center  items-center  ">
+            <div className="grid grid-cols-2 w-full">
               {categories.slice(0, 4).map((category) => (
                 <button
                   key={category._id}
-                  onClick={() => handleCategoryClick(category._id)}
-                  className={` h-14 px-2   hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300  text-sm md:text-base uppercase ${
+                  onClick={() => {
+                    handleCategoryClick(category._id);
+                    handelSendCatgeoryName(category.name);
+                  }}
+                  className={`basis-0 flex-1 px-14 py-4 hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300 text-sm md:text-base uppercase truncate ${
                     selectedCategoryId === category._id
-                      ? " text-white font-medium bg-gray-500 "
+                      ? "text-white font-medium bg-gray-500"
                       : "text-black font-normal"
                   }`}
                 >
