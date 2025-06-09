@@ -31,6 +31,7 @@ const Header = ({ toggleSidebar, toggleSearchBar }) => {
           </button>
 
           {/* Sidebar Toggle */}
+
           <button
             onClick={toggleSidebar}
             className="absolute cursor-pointer right-0 top-1/2 transform -translate-y-1/2 p-2 text-black"

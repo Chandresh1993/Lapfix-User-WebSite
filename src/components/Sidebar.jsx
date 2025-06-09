@@ -1,105 +1,12 @@
-// import { useEffect, useState } from "react";
-// import { Plus, X } from "lucide-react";
-// import axios from "axios";
-// import "./Sidebar.css"; // Import custom CSS
-// import { useNavigate } from "react-router-dom";
-
-// const Sidebar = ({ onClose }) => {
-//   const [openMain, setOpenMain] = useState(null);
-//   const [categories, setCategories] = useState([]);
-
-//   const navigation = useNavigate();
-
-//   useEffect(() => {
-//     const fetchMainCategories = async () => {
-//       try {
-//         const res = await axios.get(
-//           `${process.env.REACT_APP_BASE_URL}/mainCategory`
-//         );
-//         setCategories(res.data);
-//       } catch (err) {
-//         console.error("Failed to fetch main categories", err);
-//       }
-//     };
-
-//     fetchMainCategories();
-//   }, []);
-
-//   const toggleMain = (index) => {
-//     setOpenMain(openMain === index ? null : index);
-//   };
-
-//   const handlesubHeading = (id) => {
-//     navigation(`/?subCategoryId=${id}`);
-//   };
-
-//   return (
-//     <aside className="w-64 h-screen bg-white border border-gray-200 text-white shadow-lg overflow-y-auto relative  ">
-//       <button onClick={onClose} className="absolute top-3 right-3 text-black">
-//         <X size={18} />
-//       </button>
-//       <div className="p-6 text-2xl font-bold text-gray-900 uppercase">
-//         Lapfix
-//       </div>
-
-//       <ul className="p-4 space-y-3">
-//         {categories.map((mainItem, mainIdx) => (
-//           <li key={mainItem._id}>
-//             <div className="border-b border-gray-300">
-//               <button
-//                 onClick={() => toggleMain(mainIdx)}
-//                 className="flex items-center justify-between w-full text-left font-medium  px-1 hover:bg-gray-700 hover:text-white transition duration-300 ease-in-out text-gray-900  py-2  text-base uppercase   rounded"
-//               >
-//                 {mainItem.name}
-//                 <span
-//                   className={`transform transition-transform duration-300 ease-in-out ${
-//                     openMain === mainIdx ? "rotate-45" : "rotate-0"
-//                   }`}
-//                 >
-//                   <Plus size={18} />
-//                 </span>
-//               </button>
-//             </div>
-
-//             <div
-//               className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
-//                 openMain === mainIdx ? "max-h-40" : "max-h-0"
-//               }`}
-//             >
-//               {mainItem.subCategories.length > 0 && (
-//                 <ul className="pl-3  mt-2 space-y-2 text-black">
-//                   {mainItem.subCategories.map((subItem) => (
-//                     <li
-//                       key={subItem._id}
-//                       onClick={() => {
-//                         handlesubHeading(subItem._id);
-//                         onClose();
-//                       }}
-//                       className="text-sm font-normal  hover:bg-gray-500 hover:text-white transition duration-300 ease-in-out px-1 py-1 line-clamp-2 cursor-pointer rounded"
-//                     >
-//                       {subItem.name}
-//                     </li>
-//                   ))}
-//                 </ul>
-//               )}
-//             </div>
-//           </li>
-//         ))}
-//       </ul>
-//     </aside>
-//   );
-// };
-
-// export default Sidebar;
-
 import { useEffect, useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Folder, Plus, X } from "lucide-react";
 import axios from "axios";
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ onClose }) => {
-  const [openMain, setOpenMain] = useState(null);
+  const [openFirst, setOpenFirst] = useState(null); // Tracks opened firstCat
+  const [openMain, setOpenMain] = useState(null); // Tracks opened mainCat
   const [categories, setCategories] = useState([]);
 
   const navigation = useNavigate();
@@ -119,73 +26,102 @@ const Sidebar = ({ onClose }) => {
     fetchCategories();
   }, []);
 
-  const toggleMain = (index) => {
-    setOpenMain(openMain === index ? null : index);
-  };
-
   const handleSubHeading = (id) => {
     navigation(`/?subCategoryId=${id}`);
   };
 
   return (
-    <aside className="w-64 h-screen bg-white border border-gray-200 text-white shadow-lg overflow-y-auto relative">
+    <aside className="w-72 h-screen bg-white border border-gray-200  text-white shadow-lg overflow-y-auto relative">
       <button onClick={onClose} className="absolute top-3 right-3 text-black">
         <X size={18} />
       </button>
       <div className="p-6 text-2xl font-bold text-gray-900 uppercase">
-        Lapfix
+        GolfCource
       </div>
 
       <ul className="p-4 space-y-3">
         {categories.map((firstCat, firstIdx) => (
           <li key={firstCat._id}>
-            <div className="text-sm font-semibold text-gray-800 pl-1 pb-1 uppercase">
-              {firstCat.name}
+            <div className="flex items-center hover:bg-gray-200 px-2 py-3 rounded-md transition duration-300 ease-in-out">
+              <div className="w-6 flex items-center justify-center mr-2 text-gray-600">
+                <Folder size={20} />
+              </div>
+              <div
+                onClick={() =>
+                  setOpenFirst(openFirst === firstIdx ? null : firstIdx)
+                }
+                className="flex items-center justify-between w-full gap-2 cursor-pointer text-left font-medium uppercase text-gray-700 text-lg line-clamp-1   "
+              >
+                <div className="truncate">{firstCat.name} </div>
+                <div
+                  className={`transform transition-transform duration-300 ease-in-out ${
+                    openFirst === firstIdx ? "rotate-45" : "rotate-0"
+                  }`}
+                >
+                  <Plus size={18} />
+                </div>
+              </div>
             </div>
 
-            {firstCat.mainCategories?.map((mainCat, mainIdx) => {
-              const uniqueIndex = `${firstIdx}-${mainIdx}`;
-              return (
-                <div key={mainCat._id}>
-                  <button
-                    onClick={() => toggleMain(uniqueIndex)}
-                    className="flex items-center justify-between w-full text-left font-medium px-1 hover:bg-gray-700 hover:text-white transition duration-300 ease-in-out text-gray-900 py-2 text-base uppercase rounded"
-                  >
-                    {mainCat.name}
-                    <span
-                      className={`transform transition-transform duration-300 ease-in-out ${
-                        openMain === uniqueIndex ? "rotate-45" : "rotate-0"
-                      }`}
-                    >
-                      <Plus size={18} />
-                    </span>
-                  </button>
+            {/* Show Main Categories only if current first category is open */}
+            {openFirst === firstIdx &&
+              firstCat.mainCategories?.map((mainCat, mainIdx) => {
+                const uniqueIndex = `${firstIdx}-${mainIdx}`;
 
-                  <div
-                    className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
-                      openMain === uniqueIndex ? "max-h-40" : "max-h-0"
-                    }`}
-                  >
-                    {mainCat.subCategories?.length > 0 && (
-                      <ul className="pl-3 mt-2 space-y-2 text-black">
-                        {mainCat.subCategories.map((subItem) => (
-                          <li
-                            key={subItem._id}
-                            onClick={() => {
-                              handleSubHeading(subItem._id);
-                              onClose();
-                            }}
-                            className="text-sm font-normal hover:bg-gray-500 hover:text-white transition duration-300 ease-in-out px-1 py-1 line-clamp-2 cursor-pointer rounded"
-                          >
-                            {subItem.name}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                return (
+                  <div key={mainCat._id} className="ml-8">
+                    {/* Main Category Header */}
+                    <div
+                      onClick={() =>
+                        setOpenMain(
+                          openMain === uniqueIndex ? null : uniqueIndex
+                        )
+                      }
+                      className="flex items-center justify-between w-full text-left font-medium px-2 py-3 cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out text-gray-800 text-sm uppercase rounded"
+                    >
+                      <div className="flex items-center gap-1 truncate">
+                        {/* Merge index and name in one block to prevent breaking */}
+                        <p className="truncate">
+                          {mainIdx + 1}. {mainCat.name}
+                        </p>
+                      </div>
+
+                      <div
+                        className={`transform transition-transform duration-300 ease-in-out ${
+                          openMain === uniqueIndex ? "rotate-45" : "rotate-0"
+                        }`}
+                      >
+                        <Plus size={16} />
+                      </div>
+                    </div>
+
+                    {/* Subcategories - only visible when main category is open */}
+                    {openMain === uniqueIndex &&
+                      mainCat.subCategories?.length > 0 && (
+                        <div className="pl-4 mt-2 space-y-1">
+                          {mainCat.subCategories.map((subItem) => (
+                            <div
+                              key={subItem._id}
+                              onClick={() => {
+                                handleSubHeading(subItem._id);
+                                onClose();
+                              }}
+                              className="flex  items-center gap-2 cursor-pointer hover:bg-gray-200   transition duration-300 ease-in-out px-2 py-1 rounded"
+                            >
+                              {/* Bullet Dot */}
+                              <div className="mt-1 w-[6px] h-[6px] bg-gray-500  rounded-full flex-shrink-0"></div>
+
+                              {/* Subcategory Name */}
+                              <div className="text-sm line-clamp-1 font-normal text-gray-700 hover:text-black">
+                                {subItem.name}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </li>
         ))}
       </ul>

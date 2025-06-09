@@ -19,7 +19,7 @@ const MainLayout = ({ children }) => {
     <div className=" workspace  flex h-screen overflow-hidden relative">
       {/* Sidebar */}
       <div
-        className={`absolute z-40 inset-y-0 left-0 w-64 
+        className={`absolute z-40 inset-y-0 left-0 w-72 
         bg-white transition-transform duration-300 ease-in-out 
         transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
