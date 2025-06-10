@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Folder, Plus, X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import axios from "axios";
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
@@ -43,9 +43,6 @@ const Sidebar = ({ onClose }) => {
         {categories.map((firstCat, firstIdx) => (
           <li key={firstCat._id}>
             <div className="flex items-center hover:bg-gray-200 px-2 py-3 rounded-md transition duration-300 ease-in-out">
-              <div className="w-6 flex items-center justify-center mr-2 text-gray-600">
-                <Folder size={20} />
-              </div>
               <div
                 onClick={() =>
                   setOpenFirst(openFirst === firstIdx ? null : firstIdx)
@@ -69,7 +66,7 @@ const Sidebar = ({ onClose }) => {
                 const uniqueIndex = `${firstIdx}-${mainIdx}`;
 
                 return (
-                  <div key={mainCat._id} className="ml-8">
+                  <div key={mainCat._id} className="ml-4">
                     {/* Main Category Header */}
                     <div
                       onClick={() =>

@@ -303,14 +303,14 @@ const Product = () => {
         <div className=" w-full flex justify-center ">
           <div className=" hidden lg:grid shadow-sm">
             <div className="flex w-full">
-              {categories.slice(0, 7).map((category) => (
+              {categories.slice(0, 6).map((category) => (
                 <button
                   key={category._id}
                   onClick={() => {
                     handleCategoryClick(category._id);
                     handelSendCatgeoryName(category.name);
                   }}
-                  className={`basis-0 flex-1 px-14 py-4 hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300 text-sm md:text-base uppercase truncate ${
+                  className={`basis-0 flex-1 px-10 py-4 hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300 text-sm md:text-base uppercase truncate ${
                     selectedCategoryId === category._id
                       ? "text-white font-medium bg-gray-500"
                       : "text-black font-normal"
@@ -360,7 +360,7 @@ const Product = () => {
               <select
                 value={selectedSubCatId}
                 onChange={handleSelection}
-                className="w-full px-4 py-3 border optional:text-sm border-gray-300 optional:text-gray-800 bg-white rounded-sm focus:outline-none text-sm"
+                className="w-full px-4 py-3 border optional:text-sm border-gray-300 optional:text-gray-800 bg-white  focus:outline-none text-sm"
               >
                 <option disabled value="">
                   Select Model
@@ -374,7 +374,7 @@ const Product = () => {
               <select
                 value={selectedProductId}
                 onChange={handleProductSelect}
-                className="w-full px-4 py-3 border border-gray-300 text-gray-800 bg-white rounded-sm focus:outline-none text-sm"
+                className="w-full px-4 py-3 border border-gray-300 text-gray-800 bg-white  focus:outline-none text-sm"
               >
                 <option disabled value="">
                   Select Products
@@ -388,7 +388,7 @@ const Product = () => {
 
               <button
                 onClick={() => handleClickSreachProduct(selectedProductId)}
-                className="bg-black text-white py-2 border border-black rounded-sm 
+                className="bg-black text-white h-[44px] border border-black 
              transition-all duration-300 ease-in-out hover:bg-gray-800 hover:text-white font-medium"
               >
                 Submit

@@ -66,6 +66,7 @@ const SearchBar = ({ onClose }) => {
     navigation("/product", {
       state: { id: id },
     });
+    onClose();
   };
 
   return (
