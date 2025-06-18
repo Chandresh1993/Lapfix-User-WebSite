@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Loader from "../../components/Loader";
 import Footer from "../Home/Footer";
 import noImage from "../../assets/no_image.png";
-import Newproduct from "./Newproduct";
+import RecentlyProduct from "./RecentlyProduct";
 
 const GetSingleProduct = () => {
   const location = useLocation();
@@ -188,7 +188,7 @@ const GetSingleProduct = () => {
       </div>
       <div className="border border-gray-100"></div>
       <div className="bg-white py-10 mt-8">
-        <Newproduct></Newproduct>
+        <RecentlyProduct></RecentlyProduct>
       </div>
       <div>
         <Footer></Footer>

@@ -7,6 +7,7 @@ import Loader from "../../components/Loader";
 import Slider from "./Slider";
 
 import Newproduct from "../product/Newproduct";
+import RecentlyProduct from "../product/RecentlyProduct";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -548,6 +549,9 @@ const Product = () => {
 
         <div className="bg-white py-10 mt-8">
           <Newproduct></Newproduct>
+        </div>
+        <div className="bg-white py-10 mt-8">
+          <RecentlyProduct></RecentlyProduct>
         </div>
         <div className="mt-10 p-4">
           <p className="text-3xl text-gray-800 font-medium mb-2">
