@@ -35,7 +35,7 @@ const Sidebar = ({ onClose }) => {
       <button onClick={onClose} className="absolute top-3 right-3 text-black">
         <X size={18} />
       </button>
-      <div className="p-6 text-2xl font-bold text-gray-900 uppercase">
+      <div className="p-6 text-3xl font-bold text-gray-900 uppercase">
         GolfCource
       </div>
 

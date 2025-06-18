@@ -107,7 +107,7 @@ const SearchBar = ({ onClose }) => {
                   className="w-16 h-16 object-fill rounded"
                 />
                 <div>
-                  <p className="text-base font-normal text-black uppercase">
+                  <p className="text-base font-normal line-clamp-1 text-black uppercase">
                     {product.name}
                   </p>
                   <p className="text-base font-normal text-black uppercase">

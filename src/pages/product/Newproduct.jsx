@@ -51,7 +51,7 @@ const Newproduct = () => {
         <Loader />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 p-4">
-          {products.slice(0, 8).map((item) => (
+          {products.slice(0, 4).map((item) => (
             <div
               key={item._id}
               className="border rounded-lg bg-white p-6 cursor-pointer transition-all duration-300 transform hover:scale-[1.02] hover:drop-shadow-lg"

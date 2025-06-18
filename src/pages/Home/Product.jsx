@@ -283,6 +283,50 @@ const Product = () => {
       <div className="">
         <Slider></Slider>
       </div>
+      <div>
+        <div>
+          <div className="hidden lg:grid shadow-sm bg-black">
+            <div className="flex w-full">
+              {categories.slice(0, 8).map((category) => (
+                <button
+                  key={category._id}
+                  onClick={() => {
+                    handleCategoryClick(category._id);
+                    handelSendCatgeoryName(category.name);
+                  }}
+                  className={`basis-0 flex-1 px-10 py-4 text-white flex items-center justify-center hover:text-white text-sm md:text-base uppercase truncate ${
+                    selectedCategoryId === category._id
+                      ? "text-black font-medium underline underline-offset-4"
+                      : "text-white font-normal"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="grid lg:hidden shadow-sm  bg-black ">
+            <div className="grid grid-rows-2 grid-cols-2 ">
+              {categories.slice(0, 4).map((category) => (
+                <button
+                  key={category._id}
+                  onClick={() => {
+                    handleCategoryClick(category._id);
+                    handelSendCatgeoryName(category.name);
+                  }}
+                  className={`basis-0 flex-1 px-10 py-4 border border-white  text-white flex items-center justify-center hover:text-white text-sm md:text-base uppercase truncate ${
+                    selectedCategoryId === category._id
+                      ? "text-black font-medium underline underline-offset-4"
+                      : "text-white font-normal"
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="pt-10 pb-4  p-4">
         {mainCategoryName ? (
           <p className="text-3xl text-center font-extrabold text-black uppercase">
@@ -299,56 +343,11 @@ const Product = () => {
       </div>
       {/* -----------------------Header Sreach start--------- */}
 
-      <div className="flex justify-center mt-5  ">
-        <div className=" w-full flex justify-center ">
-          <div className=" hidden lg:grid shadow-sm">
-            <div className="flex w-full">
-              {categories.slice(0, 6).map((category) => (
-                <button
-                  key={category._id}
-                  onClick={() => {
-                    handleCategoryClick(category._id);
-                    handelSendCatgeoryName(category.name);
-                  }}
-                  className={`basis-0 flex-1 px-10 py-4 hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300 text-sm md:text-base uppercase truncate ${
-                    selectedCategoryId === category._id
-                      ? "text-white font-medium bg-gray-500"
-                      : "text-black font-normal"
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="grid lg:hidden shadow-sm ">
-            <div className="grid grid-cols-2 w-full">
-              {categories.slice(0, 4).map((category) => (
-                <button
-                  key={category._id}
-                  onClick={() => {
-                    handleCategoryClick(category._id);
-                    handelSendCatgeoryName(category.name);
-                  }}
-                  className={`basis-0 flex-1 px-14 py-4 hover:bg-gray-500 flex items-center justify-center hover:text-white border border-r border-gray-300 text-sm md:text-base uppercase truncate ${
-                    selectedCategoryId === category._id
-                      ? "text-white font-medium bg-gray-500"
-                      : "text-black font-normal"
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* ------------------------Header sreach end------------------------- */}
 
       {/* ----------Sreach by year start here--------------- */}
       <div>
-        <div className="flex items-center justify-center mt-8">
+        <div className="flex items-center justify-center mt-4">
           <div className="relative w-4/5 ">
             <div>
               <p className="text-lg text-center sm:text-left text-gray-800 font-medium mb-2">
