@@ -286,7 +286,7 @@ const Product = () => {
       </div>
       <div>
         <div>
-          <div className="hidden lg:grid shadow-sm bg-black">
+          <div className="hidden lg:grid shadow-sm bg-black border border-white">
             <div className="flex w-full">
               {categories.slice(0, 8).map((category) => (
                 <button

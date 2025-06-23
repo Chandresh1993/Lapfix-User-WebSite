@@ -178,7 +178,7 @@
 import React from "react";
 
 const Slider = () => {
-  return <div></div>;
+  return <div className="h-48 bg-black"></div>;
 };
 
 export default Slider;
