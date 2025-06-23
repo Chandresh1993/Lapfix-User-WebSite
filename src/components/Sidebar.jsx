@@ -31,12 +31,15 @@ const Sidebar = ({ onClose }) => {
   };
 
   return (
-    <aside className="w-72 h-screen bg-white border border-gray-200  text-white shadow-lg overflow-y-auto relative">
-      <button onClick={onClose} className="absolute top-3 right-3 text-black">
+    <aside className="w-72 h-screen bg-gray-100 border-gray-300 text-gray-900 shadow-lg overflow-y-auto relative">
+      <button
+        onClick={onClose}
+        className="absolute top-3 right-3 text-gray-700 hover:text-black transition"
+      >
         <X size={18} />
       </button>
-      <div className="p-6 text-3xl font-bold text-gray-900 uppercase">
-        GolfCource
+      <div className="p-6 text-3xl font-bold text-gray-800 uppercase">
+        GolfCourse
       </div>
 
       <ul className="p-4 space-y-3">
@@ -47,9 +50,9 @@ const Sidebar = ({ onClose }) => {
                 onClick={() =>
                   setOpenFirst(openFirst === firstIdx ? null : firstIdx)
                 }
-                className="flex items-center justify-between w-full gap-2 cursor-pointer text-left font-medium uppercase text-gray-700 text-lg line-clamp-1   "
+                className="flex items-center justify-between w-full gap-2 cursor-pointer text-left font-medium uppercase text-gray-800 text-lg line-clamp-1"
               >
-                <div className="truncate">{firstCat.name} </div>
+                <div className="truncate">{firstCat.name}</div>
                 <div
                   className={`transform transition-transform duration-300 ease-in-out ${
                     openFirst === firstIdx ? "rotate-45" : "rotate-0"
@@ -60,24 +63,21 @@ const Sidebar = ({ onClose }) => {
               </div>
             </div>
 
-            {/* Show Main Categories only if current first category is open */}
             {openFirst === firstIdx &&
               firstCat.mainCategories?.map((mainCat, mainIdx) => {
                 const uniqueIndex = `${firstIdx}-${mainIdx}`;
 
                 return (
                   <div key={mainCat._id} className="ml-4">
-                    {/* Main Category Header */}
                     <div
                       onClick={() =>
                         setOpenMain(
                           openMain === uniqueIndex ? null : uniqueIndex
                         )
                       }
-                      className="flex items-center justify-between w-full text-left font-medium px-2 py-3 cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out text-gray-800 text-sm uppercase rounded"
+                      className="flex items-center justify-between w-full text-left font-medium px-2 py-3 cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out text-gray-700 text-sm uppercase rounded"
                     >
                       <div className="flex items-center gap-1 truncate">
-                        {/* Merge index and name in one block to prevent breaking */}
                         <p className="truncate">{mainCat.name}</p>
                       </div>
 
@@ -90,7 +90,6 @@ const Sidebar = ({ onClose }) => {
                       </div>
                     </div>
 
-                    {/* Subcategories - only visible when main category is open */}
                     {openMain === uniqueIndex &&
                       mainCat.subCategories?.length > 0 && (
                         <div className="pl-4 mt-2 space-y-1">
@@ -101,12 +100,10 @@ const Sidebar = ({ onClose }) => {
                                 handleSubHeading(subItem._id);
                                 onClose();
                               }}
-                              className="flex  items-center gap-2 cursor-pointer hover:bg-gray-200   transition duration-300 ease-in-out px-2 py-1 rounded"
+                              className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 transition duration-300 ease-in-out px-2 py-1 rounded"
                             >
-                              {/* Bullet Dot */}
-                              <div className="mt-1 w-[6px] h-[6px] bg-gray-500  rounded-full flex-shrink-0"></div>
+                              <div className="mt-1 w-[6px] h-[6px] bg-gray-500 rounded-full flex-shrink-0"></div>
 
-                              {/* Subcategory Name */}
                               <div className="text-sm line-clamp-1 font-normal text-gray-700 hover:text-black">
                                 {subItem.name}
                               </div>

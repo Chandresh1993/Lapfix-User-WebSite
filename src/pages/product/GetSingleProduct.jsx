@@ -176,12 +176,20 @@ const GetSingleProduct = () => {
                 <h3 className="font-medium text-lg text-black">Description</h3>
                 <p className="text-gray-800">{product.description}</p>
               </div>
-              <div>
-                <h3 className="font-medium text-lg text-black">
-                  How to Install & Tips
-                </h3>
-                <p className="text-gray-800">{product.howToInstallAndTips}</p>
-              </div>
+              {product.howToInstallAndTips &&
+                product.howToInstallAndTips !== "null" && (
+                  <div>
+                    <h3 className="font-medium text-lg text-black">
+                      How to Install & Tips
+                    </h3>
+                    <div
+                      className="text-gray-800 list-decimal ml-6 [&>ol]:list-decimal [&>ul]:list-disc [&>li]:mb-2 [&_span.ql-ui]:hidden"
+                      dangerouslySetInnerHTML={{
+                        __html: product.howToInstallAndTips,
+                      }}
+                    ></div>
+                  </div>
+                )}
             </div>
           </div>
         </div>

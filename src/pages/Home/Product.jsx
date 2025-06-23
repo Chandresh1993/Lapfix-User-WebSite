@@ -449,12 +449,13 @@ const Product = () => {
                   <h2 className="text-base text-black items-center  font-normal uppercase text-center  line-clamp-1">
                     {item.name}
                   </h2>
-                  <h2 className="text-base text-black font-normal  uppercase text-center  line-clamp-1">
+                  <h2 className="text-base  text-black font-normal  uppercase text-center  line-clamp-1">
                     {item.year}
                   </h2>
-                  <p className="text-sm text-black font-normal break-words text-center line-clamp-2">
+                  <p className="text-sm block text-black font-normal break-words break-all text-center line-clamp-2 overflow-hidden text-ellipsis">
                     {item.description}
                   </p>
+
                   <div className=" flex justify-center">
                     <div className="text-base  font-normal flex gap-4 ">
                       <p className="text-red-500 font-medium">
